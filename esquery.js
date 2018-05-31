@@ -69,5 +69,5 @@ exports.build = (query) => { // expects validated express req.query object
     esbody.size(limit);
   }
 
-
+  return esbody.toJSON;
 };
