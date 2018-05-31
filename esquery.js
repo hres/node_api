@@ -48,7 +48,7 @@ exports.build = (query) => { // expects validated express req.query object
   var esbody = builder.requestBodySearch();
 
   if (!query.hasOwnProperty("search") && !query.hasOwnProperty("count")) {
-    esbody.matchAllQuery();
+    esbody.query(builder.matchAllQuery());
   }
 
   if (query.hasOwnProperty("search")) {
