@@ -61,8 +61,6 @@ var createRoute = (endpoint) => {
         res.status(500).json(err);
       }
     }
-
-    esclient.close();
   });
 };
 
