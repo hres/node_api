@@ -1,8 +1,6 @@
 
 // Bimal Bhagrath
 
-// API configuration settings
-
 module.exports = {
   "API_VERSION": "v1.1.0",
   "API_LOCAL": "http://localhost:3000",

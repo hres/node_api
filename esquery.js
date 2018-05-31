@@ -1,36 +1,57 @@
 
 // Bimal Bhagrath
-
 // MODULE : elasticsearch query manager
 
 const builder = require('elastic-builder');
 
-const VALID_QS_PARAMS = ["search", "count", "skip", "limit"];
+const QS_LIST = ["search", "count", "skip", "limit"];
 
-exports.validateQuery = (query) => { // expects express req.query
-
-  if (query === undefined || query === null) return false;
+exports.validate = (query) => { // expects express req.query object
 
   for (var param in query) {
-     if (!VALID_QS_PARAMS.includes(param)) return false;
+     if (!QS_LIST.includes(param)) {
+       throw {
+         error: "query validation",
+         status: 400,
+         message: "request contains unexpected paramater: " + param
+       };
+     }
   }
 
-  if (query.hasOwnProperty("skip") {
+  if (!query.hasOwnProperty("search") && !query.hasOwnProperty("count")) {
+    throw {
+      error: "query validation",
+      status: 400,
+      message: "request must contain either search or count parameter"
+    };
+  }
+
+  if (query.hasOwnProperty("skip")) {
     var skip = parseInt(query.skip);
 
-    if (isNaN(skip)) return false;
+    if (isNaN(skip)) {
+      throw {
+        error: "query validation",
+        status: 400,
+        message: "invalid skip value"
+      };
+    }
   }
 
-  if (query.hasOwnProperty("limit") {
+  if (query.hasOwnProperty("limit")) {
     var limit = parseInt(query.limit);
 
-    if (isNaN(limit)) return false;
+    if (isNaN(limit)) {
+      throw {
+        error: "query validation",
+        status: 400,
+        message: "invalid limit value"
+      };
+    }
   }
-
-  return true;
 };
 
-exports.buildQuery = (query) => { // expects express req.query
+exports.build = (query) => { // expects validated express req.query object
 
   if (query.hasOwnProperty("search")) {}
 };

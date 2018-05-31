@@ -1,24 +1,21 @@
 
 // Bimal Bhagrath
-
 // API entry point
 
 const express = require('express');
 const parser = require('body-parser');
 const es = require('elasticsearch');
 const c = require('./config');
-const esroutes = require(',.esroutes');
+const esroutes = require('./esroutes');
 const esquery = require('./esquery');
 
-// API SETUP
 var api = express();
 
-api.use(bodyParser.urlencoded({
+api.use(parser.urlencoded({
   extended: true
 }));
-api.use(bodyParser.json());
+api.use(parser.json());
 
-// connect to ElasticSearch
 var esclient = new es.Client({
   host: c.ELASTIC_HOST,
   log: c.ELASTIC_LOG,
@@ -38,7 +35,6 @@ api.use((req, res, next) => {
 
 api.set("json spaces", 2);
 
-// API ROUTER
 var createRoute = (endpoint) => {
 
   var route = endpoint.API_ENDPOINT;
@@ -46,20 +42,27 @@ var createRoute = (endpoint) => {
 
   api.get(route, async (req, res) => {
 
-    if (esquery.validateQuery(req.query)) {
-      console.log(req.query);
+    try {
+      esquery.validate(req.query);
+      var esbody = esquery.build(req.query);
+      var esres = await esclient.search(esbody);
+
+      res.status(200).json(esres);
     }
-    else {
-      res.status(400).json({
-        location: route,
-        message: "request contains unexpected or incorrect parameters"
-      });
+    catch (err) {
+      if (err.hasOwnProperty("status")) {
+        res.status(err.status).json(err);
+      }
+      else {
+        res.status(500).json(err);
+      }
     }
 
     esclient.close();
   });
 };
 
-esroutes.forEach((endpoint) => {
+esroutes.ENDPOINTS.forEach((endpoint) => {
+
   createRoute(endpoint);
 });

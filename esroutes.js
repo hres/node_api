@@ -1,6 +1,5 @@
 
 // Bimal Bhagrath
-
 // MODULE : express endpoint schema for elasticsearch
 
 module.exports = {
