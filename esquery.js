@@ -18,14 +18,6 @@ exports.validate = (query) => { // expects express req.query object
      }
   }
 
-  if (!query.hasOwnProperty("search") && !query.hasOwnProperty("count")) {
-    throw {
-      error: "query validation",
-      status: 400,
-      message: "request must contain either search or count parameter"
-    };
-  }
-
   if (query.hasOwnProperty("skip")) {
     var skip = parseInt(query.skip);
 
@@ -53,5 +45,29 @@ exports.validate = (query) => { // expects express req.query object
 
 exports.build = (query) => { // expects validated express req.query object
 
-  if (query.hasOwnProperty("search")) {}
+  var esbody = builder.requestBodySearch();
+
+  if (!query.hasOwnProperty("search") && !query.hasOwnProperty("count")) {
+    esbody.matchAllQuery();
+  }
+
+  if (query.hasOwnProperty("search")) {
+
+  }
+
+  if (query.hasOwnProperty("count")) {
+
+  }
+
+  if (query.hasOwnProperty("skip")) {
+    var skip = parseInt(query.skip);
+    esbody.from(skip);
+  }
+
+  if (query.hasOwnProperty("limit")) {
+    var limit = parseInt(query.limit);
+    esbody.size(limit);
+  }
+
+
 };
