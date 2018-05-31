@@ -45,10 +45,11 @@ var createRoute = (endpoint) => {
     try {
       esquery.validate(req.query);
       var esbody = esquery.build(req.query);
-      console.log(esbody);
-      //esbody.index = index;
-      //console.log(esbody);
-      var esres = await esclient.search(esbody);
+
+      var esres = await esclient.search({
+        index: index,
+        body: esbody
+      });
 
       res.status(200).json(esres);
     }
