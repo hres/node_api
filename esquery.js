@@ -11,6 +11,7 @@ const QS_LIST = [
   "limit"
 ];
 const HISTOGRAM_FIELDS = [
+  "datintreceived",
   "datreceived"
 ];
 const HISTOGRAM_INTERVALS = [
@@ -20,7 +21,7 @@ const HISTOGRAM_INTERVALS = [
   "week",
   "day"
 ];
-const MAX_LIMIT = 5000;
+const MAX_LIMIT = 1000;
 
 exports.validate = (query) => { // expects express req.query object
 
@@ -87,7 +88,9 @@ exports.build = (query) => { // expects validated express req.query object
       esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval));
     }
     else {
-      esbody.agg(builder.termsAggregation("terms", params[0]));
+      var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : MAX_LIMIT;
+
+      esbody.agg(builder.termsAggregation("terms", params[0]).size(limit));
     }
 
     esbody.size(0);
