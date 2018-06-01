@@ -9,6 +9,8 @@ const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
 
+const META_BLOCK = {};
+
 var api = express();
 
 api.use(parser.urlencoded({
@@ -40,6 +42,15 @@ api.get('/', (req, res) => {
   res.status(200).send("Hello, Welcome to Health Canada APIs (" + c.API_VERSION + ")");
 });
 
+function includeElasticResult(esres) {
+
+  return {
+    meta: META_BLOCK,
+    total: esres.hasOwnProperty("hits") && esres.hits.hasOwnProperty("total") ? esres.hits.total : undefined,
+    results: esquery.strip(esres);
+  }
+}
+
 var createRoute = (endpoint) => {
 
   var route = endpoint.API_ENDPOINT;
@@ -56,7 +67,9 @@ var createRoute = (endpoint) => {
         body: esbody
       });
 
-      res.status(200).json(esres);
+      var data = includeElasticResult(esres);
+
+      res.status(200).json(data);
     }
     catch (err) {
       if (err.hasOwnProperty("status")) {
@@ -69,6 +82,7 @@ var createRoute = (endpoint) => {
   });
 };
 
+// create dynamic endpoints for all defined endpoints in esroutes.js configuration
 esroutes.ENDPOINTS.forEach((endpoint) => {
 
   createRoute(endpoint);

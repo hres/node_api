@@ -24,8 +24,10 @@ const HISTOGRAM_INTERVALS = [
 const DEFAULT_HISTOGRAM_INTERVAL = "day";
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 1000;
+const HISTOGRAM_AGGREGATION_NAME = "intervals";
+const TERMS_AGGREGATION_NAME = "terms";
 
-exports.validate = (query) => { // expects express req.query object
+exports.validate = (query) => {
 
   for (var param in query) {
      if (!QS_LIST.includes(param)) {
@@ -40,7 +42,7 @@ exports.validate = (query) => { // expects express req.query object
   if (query.hasOwnProperty("skip")) {
     var skip = parseInt(query.skip);
 
-    if (isNaN(skip)) {
+    if (isNaN(skip) || skip < 0) {
       throw {
         error: "query validation",
         status: 400,
@@ -52,7 +54,7 @@ exports.validate = (query) => { // expects express req.query object
   if (query.hasOwnProperty("limit")) {
     var limit = parseInt(query.limit);
 
-    if (isNaN(limit)) {
+    if (isNaN(limit) || limit < 0) {
       throw {
         error: "query validation",
         status: 400,
@@ -62,7 +64,7 @@ exports.validate = (query) => { // expects express req.query object
   }
 };
 
-exports.build = (query) => { // expects validated express req.query object
+exports.build = (query) => {
 
   var esbody = builder.requestBodySearch();
 
@@ -87,12 +89,12 @@ exports.build = (query) => { // expects validated express req.query object
         interval = DEFAULT_HISTOGRAM_INTERVAL;
       }
 
-      esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval));
+      esbody.agg(builder.dateHistogramAggregation(HISTOGRAM_AGGREGATION_NAME, params[0], interval));
     }
     else {
       var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : DEFAULT_LIMIT;
 
-      esbody.agg(builder.termsAggregation("terms", params[0]).size(limit));
+      esbody.agg(builder.termsAggregation(TERMS_AGGREGATION_NAME, params[0]).size(limit));
     }
 
     esbody.size(0);
@@ -112,8 +114,24 @@ exports.build = (query) => { // expects validated express req.query object
     else {
       esbody.size(limit);
     }
-
   }
 
   return esbody.toJSON();
+};
+
+exports.strip = (body) => {
+
+  if (body.hasOwnProperty("aggregations")) {
+    if (body.aggregations.hasOwnProperty(HISTOGRAM_AGGREGATION_NAME)) {
+      return body.aggregations[HISTOGRAM_AGGREGATION_NAME]["buckets"];
+    }
+    else if (body.aggregations.hasOwnProperty(TERMS_AGGREGATION_NAME)) {
+      return body.aggregations[TERMS_AGGREGATION_NAME]["buckets"];
+    }
+  }
+  else {
+    return body.hits.hits
+  }
+
+  return [];
 };
