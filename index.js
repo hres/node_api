@@ -35,6 +35,11 @@ api.use((req, res, next) => {
 
 api.set("json spaces", 2);
 
+api.get('/' (req, res) => {
+
+  res.send(200, "Hello, Welcome to Health Canada APIs (" + c.API_VERSION + ")");
+});
+
 var createRoute = (endpoint) => {
 
   var route = endpoint.API_ENDPOINT;
