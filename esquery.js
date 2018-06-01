@@ -4,7 +4,14 @@
 
 const builder = require('elastic-builder');
 
-const QS_LIST = ["search", "count", "skip", "limit"];
+const QS_LIST = [
+  "search",
+  "count",
+  "skip",
+  "limit"
+];
+const HISTOGRAM_LIST = [];
+const MAX_LIMIT = 5000;
 
 exports.validate = (query) => { // expects express req.query object
 
@@ -52,11 +59,11 @@ exports.build = (query) => { // expects validated express req.query object
   }
 
   if (query.hasOwnProperty("search")) {
-
+    esbody.query(builder.queryStringQuery(query.search));
   }
 
   if (query.hasOwnProperty("count")) {
-
+    
   }
 
   if (query.hasOwnProperty("skip")) {
@@ -66,7 +73,14 @@ exports.build = (query) => { // expects validated express req.query object
 
   if (query.hasOwnProperty("limit")) {
     var limit = parseInt(query.limit);
-    esbody.size(limit);
+
+    if (limit > MAX_LIMIT) {
+      esbody.size(MAX_LIMIT);
+    }
+    else {
+      esbody.size(limit);
+    }
+
   }
 
   return esbody.toJSON();
