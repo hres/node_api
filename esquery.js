@@ -10,7 +10,9 @@ const QS_LIST = [
   "skip",
   "limit"
 ];
-const HISTOGRAM_FIELDS = [];
+const HISTOGRAM_FIELDS = [
+  "datreceived"
+];
 const HISTOGRAM_INTERVALS = [
   "year",
   "quarter",
