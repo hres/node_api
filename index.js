@@ -35,7 +35,7 @@ api.use((req, res, next) => {
 
 api.set("json spaces", 2);
 
-api.get('/' (req, res) => {
+api.get('/', (req, res) => {
 
   res.send(200, "Hello, Welcome to Health Canada APIs (" + c.API_VERSION + ")");
 });
