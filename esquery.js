@@ -87,7 +87,7 @@ exports.build = (query) => { // expects validated express req.query object
         interval = DEFAULT_HISTOGRAM_INTERVAL;
       }
 
-      esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval).order("time", "desc"));
+      esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval));
     }
     else {
       var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : DEFAULT_LIMIT;
