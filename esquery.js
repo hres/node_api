@@ -82,19 +82,21 @@ exports.build = (query) => { // expects validated express req.query object
         interval = "days"
       }
 
-      esbody.agg(builder.dateHistogramAggregation());
+      esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval));
     }
     else {
-      esbody.agg(builder.termsAggregation("term", params[0]));
+      esbody.agg(builder.termsAggregation("terms", params[0]));
     }
+
+    esbody.size(0);
   }
 
-  if (query.hasOwnProperty("skip")) {
+  if (query.hasOwnProperty("skip") && !query.hasOwnProperty("count")) {
     var skip = parseInt(query.skip);
     esbody.from(skip);
   }
 
-  if (query.hasOwnProperty("limit")) {
+  if (query.hasOwnProperty("limit") && !query.hasOwnProperty("count")) {
     var limit = parseInt(query.limit);
 
     if (limit > MAX_LIMIT) {
