@@ -21,6 +21,7 @@ const HISTOGRAM_INTERVALS = [
   "week",
   "day"
 ];
+const DEFAULT_HISTOGRAM_INTERVAL = "day";
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 1000;
 
@@ -80,13 +81,13 @@ exports.build = (query) => { // expects validated express req.query object
       var interval;
 
       if (params.length > 1) {
-        interval = HISTOGRAM_INTERVALS.includes(params[1]) ? params[1] : "day";
+        interval = HISTOGRAM_INTERVALS.includes(params[1]) ? params[1] : DEFAULT_HISTOGRAM_INTERVAL;
       }
       else {
-        interval = "day"
+        interval = DEFAULT_HISTOGRAM_INTERVAL;
       }
 
-      esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval));
+      esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval).order("time", "desc"));
     }
     else {
       var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : DEFAULT_LIMIT;
