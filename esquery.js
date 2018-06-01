@@ -10,7 +10,14 @@ const QS_LIST = [
   "skip",
   "limit"
 ];
-const HISTOGRAM_LIST = [];
+const HISTOGRAM_FIELDS = [];
+const HISTOGRAM_INTERVALS = [
+  "year",
+  "quarter",
+  "month",
+  "week",
+  "day"
+];
 const MAX_LIMIT = 5000;
 
 exports.validate = (query) => { // expects express req.query object
@@ -63,7 +70,23 @@ exports.build = (query) => { // expects validated express req.query object
   }
 
   if (query.hasOwnProperty("count")) {
-    
+    var params = (query.count).split(":");
+
+    if (HISTOGRAM_FIELDS.includes(params[0])) {
+      var interval;
+
+      if (params.length > 1) {
+        interval = HISTOGRAM_INTERVALS.includes(params[1]) ? params[1] : "days";
+      }
+      else {
+        interval = "days"
+      }
+
+      esbody.agg(builder.dateHistogramAggregation());
+    }
+    else {
+      esbody.agg(builder.termsAggregation("term", params[0]));
+    }
   }
 
   if (query.hasOwnProperty("skip")) {
