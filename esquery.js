@@ -78,10 +78,10 @@ exports.build = (query) => { // expects validated express req.query object
       var interval;
 
       if (params.length > 1) {
-        interval = HISTOGRAM_INTERVALS.includes(params[1]) ? params[1] : "days";
+        interval = HISTOGRAM_INTERVALS.includes(params[1]) ? params[1] : "day";
       }
       else {
-        interval = "days"
+        interval = "day"
       }
 
       esbody.agg(builder.dateHistogramAggregation("intervals", params[0], interval));
