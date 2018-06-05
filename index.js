@@ -8,7 +8,7 @@ const es = require('elasticsearch');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
-const keymanger = require('./keymanger');
+const keymanager = require('./keymanager');
 
 // RESULT HANDLING
 /*
@@ -31,7 +31,7 @@ var esclient = new es.Client({
 api.listen(c.API_PORT, () => {
 
   console.log("listening on '" + c.API_LOCAL + "' or '" + c.API_HTTPS + "'");
-  console.log(keymanger.generateAPIKey());
+  console.log(keymanager.generateAPIKey());
 });
 
 api.use((req, res, next) => {
