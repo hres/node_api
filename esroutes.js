@@ -8,5 +8,8 @@ module.exports = {
       "API_ENDPOINT": "/drug/event",
       "ES_INDEX": "drug_event*"
     }
+  ],
+  "LANDINGS": [
+    "API_LANDING": "/drug"
   ]
 }
