@@ -10,6 +10,8 @@ module.exports = {
     }
   ],
   "LANDINGS": [
-    "API_LANDING": "/drug"
+    {
+      "API_LANDING": "/drug"  
+    }
   ]
 }
