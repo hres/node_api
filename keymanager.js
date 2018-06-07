@@ -7,4 +7,4 @@ const crypto = require('crypto');
 module.exports.generateAPIKey = () => {
 
   return crypto.randomBytes(12).toString('hex');
-}
+};
