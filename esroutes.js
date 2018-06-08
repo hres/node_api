@@ -10,7 +10,7 @@ module.exports = {
     },
     {
       "API_ENDPOINT": "/drug/noc",
-      "ES_INDEX": "noc_onl"
+      "ES_INDEX": "noc_onl_test"
     }
   ],
   "LANDINGS": [
