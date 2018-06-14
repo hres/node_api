@@ -25,6 +25,7 @@
   <!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
   <script>dataLayer1 = [];</script>
   <!-- End Google Tag Manager -->
+  <script src="./main.js"></script>
 </head>
 <body vocab="http://schema.org/" typeof="WebPage">
 <!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
@@ -115,14 +116,14 @@
           <section>
             <h2>Get A New API Key</h2>
             <input id="get-key-email" type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
-            <button class="btn btn-primary" style="display: inline-block">Register</button>
-            <div id="new-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem" hidden>New API Key: <code id="new-api-key"></code></div>
+            <button class="btn btn-primary" style="display: inline-block" onclick="getAPIKey()">Register</button>
+            <div id="new-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem"></div>
           </section>
           <section>
             <h2>Forgot API Key?</h2>
             <input id="retrieve-key-email" type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
-            <button class="btn btn-primary" style="display: inline-block" onclick="getAPIKey()">Retrieve</button>
-            <div id="retrieve-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem" hidden>Your API Key has been emailed to you.</div>
+            <button class="btn btn-primary" style="display: inline-block" onclick="retrieveAPIKey()">Retrieve</button>
+            <div id="retrieve-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem"></div>
           </section>
           <section>
             <h2>Apps Built Using Health Canada APIs</h2>
