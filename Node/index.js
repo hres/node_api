@@ -46,6 +46,17 @@ api.get('/', (req, res) => {
   res.status(200).send("Hello, Welcome to Health Canada APIs (" + c.API_VERSION + ")");
 });
 
+api.get('/key', (req, res) => {
+
+  // store key with email
+
+  const apiKey = keymanager.generateAPIKey();
+
+  res.status(201).json({
+    key: apiKey
+  });
+});
+
 // RESULT HANDLING
 /*
 function includeElasticResult(esres) {

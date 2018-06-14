@@ -114,15 +114,15 @@
           <p class="mrgn-tp-lg">The Health Canada APIs provide an application independent method of querying several raw Health Canada datasets and data sources. The following APIs serve JSON responses and require an API key to access outside the canada.ca domain.</p>
           <section>
             <h2>Get A New API Key</h2>
-            <input type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
+            <input id="get-key-email" type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
             <button class="btn btn-primary" style="display: inline-block">Register</button>
-            <div style="display: inline-block; margin-left: 40px; font-size: 2rem">New API Key: <code id="new-api-key">HH7ysf543DHrQ32i8do09u6</code></div>
+            <div id="new-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem" hidden>New API Key: <code id="new-api-key"></code></div>
           </section>
           <section>
             <h2>Forgot API Key?</h2>
-            <input type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
-            <button class="btn btn-primary" style="display: inline-block">Retrieve</button>
-            <div style="display: inline-block; margin-left: 40px; font-size: 2rem">Your API Key has been emailed to you.</div>
+            <input id="retrieve-key-email" type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
+            <button class="btn btn-primary" style="display: inline-block" onclick="getAPIKey()">Retrieve</button>
+            <div id="retrieve-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem" hidden>Your API Key has been emailed to you.</div>
           </section>
           <section>
             <h2>Apps Built Using Health Canada APIs</h2>
