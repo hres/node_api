@@ -9,7 +9,7 @@ function getAPIKey() {
     $("#new-key-div").html("New API Key: <code>" + res.key + "</code>");
   })
     .fail((error) => {
-      $("#new-api-key").html("API key error");
+      $("#new-key-div").html("<code>API key error</code>");
     });
 }
 
