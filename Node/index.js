@@ -11,9 +11,8 @@ const esquery = require('./esquery');
 const keymanager = require('./keymanager');
 
 // RESULT HANDLING
-/*
+
 const META_BLOCK = {};
-*/
 
 var api = express();
 
@@ -48,26 +47,31 @@ api.get('/', (req, res) => {
 
 api.get('/key', (req, res) => {
 
-  // store key with email
+  if (req.headers.hasOwnProperty("x-key-gen-secret") && req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET) {
+    // store key with email
 
-  const apiKey = keymanager.generateAPIKey();
+    const apiKey = keymanager.generateAPIKey();
 
-  res.status(201).json({
-    key: apiKey
-  });
+    res.status(201).json({
+      key: apiKey
+    });
+  }
+  else {
+    res.status(400).json({
+      error: "Authorization Error",
+      message: "unable to generate api key"
+    });
+  }
 });
 
-// RESULT HANDLING
-/*
 function includeElasticResult(esres) {
 
   return {
     meta: META_BLOCK,
-    total: esres.hasOwnProperty("hits") && esres.hits.hasOwnProperty("total") ? esres.hits.total : undefined,
+    total: esres.hasOwnProperty("hits") && esres.hits.hasOwnProperty("total") ? esres.hits.total : "error",
     results: esquery.strip(esres)
   };
 }
-*/
 
 //var createLanding = (landing) => {};
 
@@ -87,12 +91,9 @@ var createRoute = (endpoint) => {
         body: esbody
       });
 
-      // RESULT HANDLING
-      /*
       var data = includeElasticResult(esres);
-      */
 
-      res.status(200).json(esres);
+      res.status(200).json(data);
     }
     catch (err) {
       if (err.hasOwnProperty("status")) {

@@ -4,6 +4,12 @@ function getAPIKey() {
   var email = $("#get-key-email").val();
   console.log(email);
 
+  $.ajaxSetup({
+    headers: {
+      "X-Key-Gen-Secret": "01MuVFCyvw"
+    }
+  });
+
   $.get("https://node.hres.ca/key?email=" + email, (res) => {
 
     $("#new-key-div").html("New API Key: <code>" + res.key + "</code>");

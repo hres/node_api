@@ -119,8 +119,6 @@ exports.build = (query) => {
   return esbody.toJSON();
 };
 
-// RESULT HANDLING
-/*
 exports.strip = (body) => {
 
   if (body.hasOwnProperty("aggregations")) {
@@ -137,4 +135,3 @@ exports.strip = (body) => {
 
   return [];
 };
-*/
