@@ -121,17 +121,26 @@ exports.build = (query) => {
 
 exports.strip = (body) => {
 
+  var response = {};
+
+  response.total = body.hasOwnProperty("hits") && body.hits.hasOwnProperty("total") ? body.hits.total : 0
+
   if (body.hasOwnProperty("aggregations")) {
     if (body.aggregations.hasOwnProperty(HISTOGRAM_AGGREGATION_NAME)) {
-      return body.aggregations[HISTOGRAM_AGGREGATION_NAME]["buckets"];
+      response.plot = "histogram";
+      response.results = body.aggregations[HISTOGRAM_AGGREGATION_NAME]["buckets"];
     }
     else if (body.aggregations.hasOwnProperty(TERMS_AGGREGATION_NAME)) {
-      return body.aggregations[TERMS_AGGREGATION_NAME]["buckets"];
+      response.plot = "terms";
+      response.results = body.aggregations[TERMS_AGGREGATION_NAME]["buckets"];
     }
   }
+  else if (body.hasOwnProperty("hits")) {
+    response.results = body.hits.hits
+  }
   else {
-    return body.hits.hits
+    response.results = [];
   }
 
-  return [];
+  return response;
 };

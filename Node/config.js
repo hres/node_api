@@ -1,6 +1,6 @@
 
 // Bimal Bhagrath
-// CONFIG : move to process.env for production
+// CONFIG : move environment variables to process.env for production
 
 module.exports = {
   "API_VERSION": "v1.1.0",
@@ -14,5 +14,11 @@ module.exports = {
     level: "error",
     path: "./esclient.log"
   },
-  "KEY_GEN_SECRET": "01MuVFCyvw"
+  "KEY_GEN_SECRET": "01MuVFCyvw",
+  "RESPONSE_META_DATA": {
+    disclaimer: "",
+    terms: "",
+    license: "",
+    date_updated: "2018-06-18"
+  }
 };

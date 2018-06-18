@@ -12,8 +12,6 @@ const keymanager = require('./keymanager');
 
 // RESULT HANDLING
 
-const META_BLOCK = {};
-
 var api = express();
 
 api.use(parser.urlencoded({
@@ -46,12 +44,14 @@ api.get('/', (req, res) => {
   res.status(200).send("Hello, Welcome to Health Canada APIs (" + c.API_VERSION + ")");
 });
 
-api.get('/key', (req, res) => {
+api.get('/getkey', (req, res) => {
 
-  if (req.headers.hasOwnProperty("x-key-gen-secret") && req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET) {
-    // store key with email
-
+  if (req.headers.hasOwnProperty("x-key-gen-secret") && req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET && req.query.hasOwnProperty("email")) {
     const apiKey = keymanager.generateAPIKey();
+
+    // store key with email
+    console.log(req.query.email);
+    console.log(apiKey);
 
     res.status(201).json({
       key: apiKey
@@ -59,18 +59,43 @@ api.get('/key', (req, res) => {
   }
   else {
     res.status(400).json({
-      error: "Authorization Error",
-      message: "unable to generate api key"
+      error: "unable to generate api key"
     });
   }
 });
 
+//api.post('/lostkey', (req, res) => {});
+
+// restrict to no public access
+api.get('/statistics', (req, res) => {
+
+  // include actual statistics from logs
+  res.status(200).json({
+    datasets: {
+      drugs: {},
+      foods: {},
+      devices: {},
+      other: {}
+    },
+    api_calls: {
+      time: [0],
+      drugs: 0,
+      foods: 0,
+      devices: 0,
+      other: 0
+    }
+  });
+});
+
 function includeElasticResult(esres) {
 
+  const stripped = esquery.strip(esres);
+
   return {
-    meta: META_BLOCK,
-    total: esres.hasOwnProperty("hits") && esres.hits.hasOwnProperty("total") ? esres.hits.total : "error",
-    results: esquery.strip(esres)
+    meta: c.RESPONSE_META_DATA,
+    total: stripped.total,
+    plot: stripped.hasOwnProperty("plot") ? stripped.plot : undefined,
+    results: stripped.results
   };
 }
 
