@@ -92,7 +92,7 @@ exports.build = (query) => {
       esbody.agg(builder.dateHistogramAggregation(HISTOGRAM_AGGREGATION_NAME, params[0], interval));
     }
     else {
-      var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : DEFAULT_LIMIT;
+      var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : MAX_LIMIT;
 
       esbody.agg(builder.termsAggregation(TERMS_AGGREGATION_NAME, params[0]).size(limit));
     }

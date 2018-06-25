@@ -17,7 +17,7 @@ module.exports = {
   "KEY_GEN_SECRET": "01MuVFCyvw",
   "RESPONSE_META_DATA": {
     disclaimer: "",
-    terms: "",
+    terms_of_use: "",
     license: "",
     date_updated: "2018-06-18"
   }

@@ -25,6 +25,8 @@
   <!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
   <script>dataLayer1 = [];</script>
   <!-- End Google Tag Manager -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
   <script src="./main.js"></script>
 </head>
 <body vocab="http://schema.org/" typeof="WebPage">
@@ -43,7 +45,7 @@
         <div class="row">
           <div class="col-md-12">
             <ul class="list-inline margin-bottom-none">
-              <li><a lang="fr" href="regulations-fr.html">Français</a></li>
+              <li><a lang="fr" href="docs-fr.html">Français</a></li>
             </ul>
           </div>
         </div>
@@ -139,13 +141,62 @@
         </details>
         <details id="details-panel2">
           <summary>API Endpoints</summary>
-          <p class="mrgn-tp-lg">A list of possible endpoints can be found below. These endpoints can be accessed via <code>https://www.canada.ca/apis/&ltENDPOINT&gt?&ltQUERY&gt</code>.</p>
+          <p class="mrgn-tp-lg">A list of possible endpoints can be found below. These endpoints can be accessed via <code>https://www.canada.ca/apis/&ltENDPOINT&gt</code>.</p>
           <h2>drug/event</h2>
           <p>Data on drug products and related event and outcomes.</p>
         </details>
         <details id="details-panel3">
           <summary>Documentation</summary>
-          <p class="mrgn-tp-lg">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, recusandae! Dolor aliquam, nostrum, velit inventore incidunt vero error at iste, sit, ut odit dignissimos ipsa sequi vel repellendus quis ratione esse debitis quas reiciendis minima eius quia! Necessitatibus molestiae eaque quia ullam ab. Deserunt, eveniet?</p>
+          <p class="mrgn-tp-lg">### Documentation intro here.</p>
+          <h2>Live Data</h2>
+          <form onsubmit="return false;">
+            <div class="form-row">
+              <div class="col-sm-12">
+                <label for="query">Query:</label>
+                <input id="query" type="text" class="form-control" placeholder="https://node.hres.ca" style="width: 100%; cursor: auto" disabled>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-sm-2" style="margin-top: 10px">
+                <label for="query-endpoint">Endpoint:</label>
+                <select id="query-endpoint" class="form-control" style="width: 100%">
+                  <optgroup label="Drugs">
+                    <option value="drug/event" selected>drug/event</option>
+                  </optgroup>
+                  <optgroup label="Foods"></optgroup>
+                  <optgroup label="Devices"></optgroup>
+                  <optgroup label="Other"></optgroup>
+                </select>
+              </div>
+              <div class="col-sm-6" style="margin-top: 10px">
+                <label for="query-search">Search:</label>
+                <input id="query-search" class="form-control" style="width: 100%">
+              </div>
+              <div class="col-sm-2" style="margin-top: 10px">
+                <label for="query-skip">Skip:</label>
+                <input id="query-skip" class="form-control" style="width: 100%">
+              </div>
+              <div class="col-sm-2" style="margin-top: 10px">
+                <label for="query-limit">Limit:</label>
+                <input id="query-limit" class="form-control" value="10" style="width: 100%" disabled>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-sm-4" style="margin-top: 10px">
+                <label for="query-count">Count:</label>
+                <input id="query-count" class="form-control" style="width: 100%">
+              </div>
+              <div class="col-sm-3">
+                <button id="try" class="btn btn-primary" onclick="buildQuery()" style="margin-top: 37px">Try It Out</button>
+              </div>
+            </div>
+          </form>
+          <div>
+            <canvas id="data-chart"></chart>
+          </div>
+          <textarea id="json-response" class="form-control" style="min-width: 100%; min-height: 250px; font-size: 1.2rem; font-family: monospace; cursor: auto" disabled></textarea>
+          <h2>Queries</h2>
+          <h2>Examples</h2>
         </details>
         <details id="details-panel4">
           <summary>Statistics</summary>
@@ -275,7 +326,6 @@
     </div>
   </footer>
   <!--[if gte IE 9 | !IE ]><!-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
   <script src="./dep/wet-boew.min.js"></script>
   <!--<![endif]-->
   <!--[if lt IE 9]>

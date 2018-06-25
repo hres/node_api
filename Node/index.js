@@ -10,8 +10,6 @@ const esroutes = require('./esroutes');
 const esquery = require('./esquery');
 const keymanager = require('./keymanager');
 
-// RESULT HANDLING
-
 var api = express();
 
 api.use(parser.urlencoded({
@@ -50,8 +48,7 @@ api.get('/getkey', (req, res) => {
     const apiKey = keymanager.generateAPIKey();
 
     // store key with email
-    console.log(req.query.email);
-    console.log(apiKey);
+    console.log(req.query.email + " " + apiKey);
 
     res.status(201).json({
       key: apiKey
