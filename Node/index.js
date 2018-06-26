@@ -88,7 +88,7 @@ api.get('/qmod', (req, res) => {
 
   // restrict which fields can be aggregated on and list them to return
 
-  let indices  = esroutes.endpoints.map((endpoint) => {
+  let indices  = esroutes.ENDPOINTS.map((endpoint) => {
     return endpoint.API_ENDPOINT;
   });
 
