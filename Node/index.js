@@ -84,7 +84,7 @@ api.get('/statistics', (req, res) => {
   });
 });
 
-api.get('/qmod', (req, res) {
+api.get('/qmod', (req, res) => {
 
   // restrict which fields can be aggregated on and list them to return
 
@@ -94,8 +94,7 @@ api.get('/qmod', (req, res) {
     };
   });
 
-  return indices;
-
+  return res.status(200).json(indices);
 });
 
 function includeElasticResult(esres) {
