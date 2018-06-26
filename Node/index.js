@@ -84,6 +84,20 @@ api.get('/statistics', (req, res) => {
   });
 });
 
+api.get('/qmod', (req, res) {
+
+  // restrict which fields can be aggregated on and list them to return
+
+  let indices  = esroutes.endpoints.map((endpoint) => {
+    return {
+      endpoint.API_ENDPOINT: []
+    };
+  });
+
+  return indices;
+
+});
+
 function includeElasticResult(esres) {
 
   const stripped = esquery.strip(esres);
