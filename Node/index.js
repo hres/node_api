@@ -89,12 +89,12 @@ api.get('/qmod', (req, res) => {
   // restrict which fields can be aggregated on and list them to return
 
   let indices  = esroutes.endpoints.map((endpoint) => {
-    return {
-      (endpoint.API_ENDPOINT).toString: []
-    };
+    return endpoint.API_ENDPOINT;
   });
 
-  return res.status(200).json(indices);
+  return res.status(200).json({
+    indices: indices
+  });
 });
 
 function includeElasticResult(esres) {
