@@ -90,7 +90,7 @@ api.get('/qmod', (req, res) => {
 
   let indices  = esroutes.endpoints.map((endpoint) => {
     return {
-      endpoint.API_ENDPOINT: []
+      (endpoint.API_ENDPOINT).toString: []
     };
   });
 
