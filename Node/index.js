@@ -84,7 +84,7 @@ api.get('/statistics', (req, res) => {
   });
 });
 
-api.get('/qmod', (req, res) => {
+api.get('/_info', (req, res) => {
 
   // restrict which fields can be aggregated on and list them to return
 
