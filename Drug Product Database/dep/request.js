@@ -124,9 +124,7 @@ function createPagination(content) {
 
   if (currentPage < pageMedian) {
     for (var i = 0; i < pagesAllowed; i++) {
-      if (i < totalPages) {
-        pageArray.push(i + 1);
-      }
+      if (i < totalPages) pageArray.push(i + 1);
     }
 
     makePages(pageArray, currentPage);
