@@ -22,7 +22,7 @@ var ctx;
 
 $(document).ready(() => {
 
-  $.get("http://node.hres.ca/_info", (res) => {
+  $.get("https://node.hres.ca/_info", (res) => {
 
     res.indices.forEach((index) => {
 

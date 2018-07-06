@@ -16,6 +16,12 @@ module.exports = {
   "LANDINGS": [
     {
       "API_LANDING": "/drug"
+    },
+    {
+      "API_LANDING": "/food"
+    },
+    {
+      "API_LANDING": "/device"
     }
   ]
 }
