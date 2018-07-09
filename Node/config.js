@@ -2,6 +2,18 @@
 // Bimal Bhagrath
 // CONFIG : move environment variables to process.env for production
 
+// running server requires PM2 node process manager module
+// npm install pm2 -g
+
+// starting server
+// pm2 start index.js -i max
+
+// restart server and implement modifications
+// pm2 restart all
+
+// running on boot of linux system
+// pm2 startup systemd
+
 module.exports = {
   "API_VERSION": "v1.1.0",
   "API_LOCAL": "http://localhost:3000",
