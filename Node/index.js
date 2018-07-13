@@ -39,7 +39,13 @@ api.set("json spaces", 2);
 
 api.get('/', (req, res) => {
 
-  res.status(200).send("Hello, Welcome to Health Canada APIs (" + c.API_VERSION + ")");
+  const options = {
+    root: __dirname + "/Documentation/"
+  };
+
+  res.status(200).sendFile("index.html", options, (err) => {
+    console.log(err);
+  });
 });
 
 api.get('/getkey', (req, res) => {

@@ -8,6 +8,9 @@
 // starting server
 // pm2 start index.js -i max
 
+// stop server
+// pm2 stop all
+
 // restart server and implement modifications
 // pm2 restart all
 
