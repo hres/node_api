@@ -34,7 +34,7 @@ api.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "X-Key-Gen-Secret");
     next();
 });
-app.use(express.static("public"));
+api.use(express.static("public"));
 
 api.set("json spaces", 2);
 
