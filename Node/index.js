@@ -34,19 +34,20 @@ api.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "X-Key-Gen-Secret");
     next();
 });
+app.use(express.static("public"));
 
 api.set("json spaces", 2);
 
-api.get('/', (req, res) => {
+/*api.get('/', (req, res) => {
 
   const options = {
-    root: __dirname + "/Documentation/"
-  };
+    root: __dirname + "/Documentation"
+  }
 
   res.status(200).sendFile("index.html", options, (err) => {
     console.log(err);
   });
-});
+});*/
 
 api.get('/getkey', (req, res) => {
 
