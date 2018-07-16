@@ -1,6 +1,6 @@
 
 const drugCode = window.location.search.substr(4);
-const documentURL = "https://rest-dev.hres.ca/rest-dev/dpd_json";
+const documentURL = "https://rest-dev.hres.ca/dpd/dpd_json";
 const monographURL = "https://rest-dev.hres.ca/rest-dev/product_monographs";
 const monographHost = "https://pdf.hres.ca/dpd_pm/";
 
@@ -13,25 +13,21 @@ $(document).ready(() => {
     const drug = data[0].drug_product;
 
     $("#product-title").html(drug.brand_name);
+
+    const status = drug.status[0];
+
+    $("#status").html("<strong>" + status.status + "</strong>");
+
+    var statusDate = "N/A";
     var marketDate = "N/A";
+    if (status.history_date) statusDate = makeDate(status.history_date);
+    if (status.original_market_date) marketDate = makeDate(status.original_market_date);
 
-    (drug.status).forEach((s) => {
-
-      if (s.current_status_flag == "Y") {
-        $("#status").html("<strong>" + s.status + "</strong>");
-        $("#status-date").html(s.history_date);
-      }
-
-      if (s.status == "MARKETED") {
-        if (s.history_date < marketDate) marketDate = s.history_date;
-      }
-    });
-
+    $("#status-date").html(statusDate);
     $("#market").html(marketDate);
     $("#product").html(drug.brand_name);
     $("#din").html(drug.drug_identification_number);
 		$("#company").html("<strong>" + drug.company.company_name + "</strong>");
-		if (drug.company.suite_number !== "") $("#company").append("<br>" + drug.company.suite_number);
     $("#company").append("<br>" + drug.company.street_name + "<br>" + drug.company.city_name + ", " + drug.company.province + "<br>" + drug.company.country + " " + drug.company.postal_code);
     $("#drug-class").html(drug.class);
 
@@ -71,6 +67,7 @@ $(document).ready(() => {
     });
 
     $("#ingredients-content").html(body);
+    $("#rmp").html("A Risk Management Plan (RMP) for this product " + (drug.risk_man_plan == "N" ? "was not" : "was") + " submitted.");
     $("#api-call").attr("href", url).attr("target", "_blank").html(url);
   });
 
@@ -106,4 +103,13 @@ function maskCode(id, length) {
     while (code.length < length) code = "0" + code;
 
     return code;
+}
+
+function makeDate(iso) {
+
+  const d = new Date(iso);
+  const month = d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1);
+  const day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+
+  return d.getFullYear() + "-" + month + "-" + day;
 }

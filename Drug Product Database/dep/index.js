@@ -1,7 +1,7 @@
 
 "use strict";
 
-const autocompleteURL = "https://rest-dev.hres.ca/rest-dev/dpd_search";
+const autocompleteURL = "https://rest-dev.hres.ca/dpd/dpd_lookup";
 const autocompleteLimit = 20;
 const resultPageURL = "results.html";
 const illegal = ["of", "&", "and", "?", "!", "or", "+", "-", "no."];

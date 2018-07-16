@@ -1,6 +1,6 @@
 
 const search = window.location.search.substr(1);
-const documentURL = "https://rest-dev.hres.ca/rest-dev/dpd_json3";
+const documentURL = "https://rest-dev.hres.ca/dpd/dpd_search";
 const limit = 25;
 const pagesAllowed = 5;
 var page = 0;
