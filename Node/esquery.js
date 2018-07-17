@@ -12,6 +12,7 @@ const QS_LIST = [
 ];
 const HISTOGRAM_FIELDS = [
   "datintreceived",
+  "report.datintreceived",
   "datreceived"
 ];
 const HISTOGRAM_INTERVALS = [
