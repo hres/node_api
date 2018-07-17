@@ -11,6 +11,10 @@ module.exports = {
     {
       "API_ENDPOINT": "/drug/event2",
       "ES_INDEX": "an_index2"
+    },
+    {
+      "API_ENDPOINT": "/drug/event3",
+      "ES_INDEX": "drug_event_unnested"
     }
   ],
   "LANDINGS": [

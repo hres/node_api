@@ -38,17 +38,6 @@ api.use(express.static("public"));
 
 api.set("json spaces", 2);
 
-/*api.get('/', (req, res) => {
-
-  const options = {
-    root: __dirname + "/Documentation"
-  }
-
-  res.status(200).sendFile("index.html", options, (err) => {
-    console.log(err);
-  });
-});*/
-
 api.get('/getkey', (req, res) => {
 
   if (req.headers.hasOwnProperty("x-key-gen-secret") && req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET && req.query.hasOwnProperty("email")) {
@@ -95,7 +84,7 @@ api.get('/_info', (req, res) => {
 
   // restrict which fields can be aggregated on and list them to return
 
-  let indices  = esroutes.ENDPOINTS.map((endpoint) => {
+  let indices = esroutes.ENDPOINTS.map((endpoint) => {
     return endpoint.API_ENDPOINT;
   });
 
@@ -118,7 +107,7 @@ function includeElasticResult(esres) {
 
 //var createLanding = (landing) => {};
 
-var createRoute = (endpoint) => {
+var createLinearRoute = (endpoint) => {
 
   var route = endpoint.API_ENDPOINT;
   var index = endpoint.ES_INDEX;
@@ -149,6 +138,27 @@ var createRoute = (endpoint) => {
   });
 };
 
+/*var createDirectRoute = (endpoint) => {
+
+  var route = endpoint.API_ENDPOINT;
+  var index = endpoint.ES_INDEX;
+
+  api.post(route, async (req, res) => {
+
+    try {
+      var esbody = esquery.okRequest(req.body);
+    }
+    catch (err) {
+      if (err.hasOwnProperty("status")) {
+        res.status(err.status).json(err);
+      }
+      else {
+        res.status(500).json(err);
+      }
+    }
+  });
+}*/
+
 // create dynamic landings for all defined landings in esroutes.js configuration
 /*
 esroutes.LANDINGS.forEach((landing) => {
@@ -160,5 +170,5 @@ esroutes.LANDINGS.forEach((landing) => {
 // create dynamic endpoints for all defined endpoints in esroutes.js configuration
 esroutes.ENDPOINTS.forEach((endpoint) => {
 
-  createRoute(endpoint);
+  createLinearRoute(endpoint);
 });
