@@ -43,7 +43,7 @@ function requestDocuments(q) {
 
   q.forEach((_q) => {
 
-    url += ("&search=@@." + _q);
+    url += ("&search=fts." + _q);
   });
 
   url += "&order=drug_product->>brand_name";
