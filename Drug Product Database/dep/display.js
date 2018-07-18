@@ -69,6 +69,7 @@ $(document).ready(() => {
     $("#ingredients-content").html(body);
     $("#rmp").html("A Risk Management Plan (RMP) for this product " + (drug.risk_man_plan == "N" ? "was not" : "was") + " submitted.");
     $("#api-call").attr("href", url).attr("target", "_blank").html(url);
+    $("#refresh").text(makeDate(drug.last_refresh));
   });
 
   const url2 = monographURL + "?select=*&drug_code=eq." + drugCode;
