@@ -15,6 +15,10 @@ module.exports = {
     {
       "API_ENDPOINT": "/drug/event3",
       "ES_INDEX": "drug_event_unnested"
+    },
+    {
+      "API_ENDPOINT": "/drug/event4",
+      "ES_INDEX": "cv_report_nested_arrays"
     }
   ],
   "LANDINGS": [
