@@ -4,7 +4,7 @@
 
 const express = require('express');
 const parser = require('body-parser');
-const multer = require('multer');
+const Multer = require('multer');
 const es = require('elasticsearch');
 const c = require('./config');
 const esroutes = require('./esroutes');
@@ -24,10 +24,10 @@ var esclient = new es.Client({
   requestTimeout: 10000
 });
 
-const forms = multer({
-  storage: multer.memoryStorage(),
+var multer = Multer({
+  storage: Multer.memoryStorage(),
   limits: {
-    fileSize: 1024 * 1024
+    fileSize: 5 * 1024 * 1024
   }
 });
 
@@ -181,9 +181,10 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
   createLinearRoute(endpoint);
 });
 
-api.post('/xml', forms.single("file"), (req, res) => {
+api.post('/xml', multer.single("xml"), (req, res) => {
 
   console.log(req.file);
+  console.log(req.files);
 
   res.status(200).json({
     success: true
