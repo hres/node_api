@@ -4,6 +4,7 @@
 
 const express = require('express');
 const parser = require('body-parser');
+const multer = require('multer');
 const es = require('elasticsearch');
 const c = require('./config');
 const esroutes = require('./esroutes');
@@ -13,7 +14,7 @@ const keymanager = require('./keymanager');
 var api = express();
 
 api.use(parser.urlencoded({
-  extended: true
+  extended: false
 }));
 api.use(parser.json());
 
@@ -21,6 +22,13 @@ var esclient = new es.Client({
   host: c.ELASTIC_HOST,
   log: c.ELASTIC_LOG,
   requestTimeout: 10000
+});
+
+const forms = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 1024 * 1024
+  }
 });
 
 api.listen(c.API_PORT, () => {
@@ -173,9 +181,9 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
   createLinearRoute(endpoint);
 });
 
-api.post('/xml', (req, res) => {
+api.post('/xml', forms.single("file"), (req, res) => {
 
-  console.log(req.body);
+  console.log(req.file);
 
   res.status(200).json({
     success: true
