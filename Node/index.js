@@ -5,6 +5,7 @@
 const express = require('express');
 const parser = require('body-parser');
 const Multer = require('multer');
+const xslt = require('xslt-processor');
 const es = require('elasticsearch');
 const c = require('./config');
 const esroutes = require('./esroutes');
@@ -188,11 +189,16 @@ api.post('/xml', multer.single("xml"), (req, res) => {
       success: false
     });
   }
-  else {
+  else if (req.file.mimetype === "text/xml" || req.file.mimetype === "application/x-zip-compressed") {
     console.log(req.file);
 
     res.status(200).json({
       success: true
+    });
+  }
+  else {
+    res.status(400).json({
+      success: false
     });
   }
 });
