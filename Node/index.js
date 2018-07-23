@@ -172,3 +172,12 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
 
   createLinearRoute(endpoint);
 });
+
+api.post('/xml', (req, res) => {
+
+  console.log(req.body);
+
+  res.status(200).json({
+    success: true
+  });
+});
