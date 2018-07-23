@@ -192,9 +192,9 @@ api.post('/xml', multer.single("xml"), (req, res) => {
     });
   }
   else if (req.file.mimetype === "text/xml") {
-    console.log(req.file);
+    console.log(req.file.buffer);
 
-    var xml = fs.readFile(req.file, "utf8", (err, data) => { console.log(data) });
+    var xml = fs.readFile(req.file.buffer, "utf8", (err, data) => { console.log(data) });
 
     //var xml = xlst.xmlParse(req.file)
 
@@ -203,7 +203,7 @@ api.post('/xml', multer.single("xml"), (req, res) => {
     });
   }
   else if (req.file.mimetype === "application/x-zip-compressed") {
-    console.log(req.file.buffer);
+    console.log(req.file);
 
     res.status(200).json({
       success: true
