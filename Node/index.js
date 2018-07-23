@@ -203,7 +203,7 @@ api.post('/xml', multer.single("xml"), (req, res) => {
     });
   }
   else if (req.file.mimetype === "application/x-zip-compressed") {
-    console.log(req.file);
+    console.log(req.file.buffer);
 
     res.status(200).json({
       success: true
