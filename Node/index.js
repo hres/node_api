@@ -6,6 +6,7 @@ const express = require('express');
 const parser = require('body-parser');
 const Multer = require('multer');
 const xslt = require('xslt-processor');
+const fs = require('fs');
 const es = require('elasticsearch');
 const c = require('./config');
 const esroutes = require('./esroutes');
@@ -193,15 +194,17 @@ api.post('/xml', multer.single("xml"), (req, res) => {
   else if (req.file.mimetype === "text/xml") {
     console.log(req.file);
 
-    const xmlString = new XMLSerializer().serializeToString((req.file).documentElement);
-    console.log(xmlString);
+    var xml = fs.readFile(req.file, "utf8", (err, data) => { console.log(data) });
+
+    //var xml = xlst.xmlParse(req.file)
 
     res.status(200).json({
-      xml: xmlString
+      success: true
     });
   }
   else if (req.file.mimetype === "application/x-zip-compressed") {
     console.log(req.file);
+
     res.status(200).json({
       success: true
     });
