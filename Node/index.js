@@ -182,6 +182,7 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
   createLinearRoute(endpoint);
 });
 
+// TODO: make XML module or create separate API
 api.post('/xml', multer.single("xml"), (req, res) => {
 
   if (!req.file) {
@@ -189,9 +190,18 @@ api.post('/xml', multer.single("xml"), (req, res) => {
       success: false
     });
   }
-  else if (req.file.mimetype === "text/xml" || req.file.mimetype === "application/x-zip-compressed") {
+  else if (req.file.mimetype === "text/xml") {
     console.log(req.file);
 
+    const xmlString = new XMLSerializer().serializeToString((req.file).documentElement);
+    console.log(xmlString);
+
+    res.status(200).json({
+      xml: xmlString
+    });
+  }
+  else if (req.file.mimetype === "application/x-zip-compressed") {
+    console.log(req.file);
     res.status(200).json({
       success: true
     });
