@@ -183,10 +183,16 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
 
 api.post('/xml', multer.single("xml"), (req, res) => {
 
-  console.log(req.file);
-  console.log(req.files);
+  if (!req.file) {
+    res.status(404).json({
+      success: false
+    });
+  }
+  else {
+    console.log(req.file);
 
-  res.status(200).json({
-    success: true
-  });
+    res.status(200).json({
+      success: true
+    });
+  }
 });

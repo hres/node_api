@@ -18,13 +18,12 @@
       var data = new FormData();
       data.append("xml", xml, xml.name);
 
-      //var data = $("form").serialize();
-
       $.ajax({
         url: "https://node.hres.ca/xml",
         method: "POST",
         data: data,
         processData: false,
+        contentType: false,
         success: (res) => {
           console.log(res);
         },
