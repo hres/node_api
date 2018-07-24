@@ -190,9 +190,17 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
 // TODO: make XML module or create separate API
 api.post('/xml', /*multer.single("xml"),*/ (req, res) => {
 
-  console.log(req.body.xml);
-
   var x = xslt.xmlParse(req.body.xml);
+
+  var xsl = "";
+
+  var readStream = fs.createReadStream("./public/dep/note.xsl", "utf8");
+
+  readStream.on('data', function(chunk) {
+    xsl += chunk;
+  }).on('end', function() {
+    console.log(xsl);
+  });
 
   console.log(x);
 
