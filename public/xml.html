@@ -1,0 +1,56 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+</head>
+<body>
+  <form onsubmit="return false;">
+    <input id="xml-in" type="file">
+  </form>
+  <button onclick="submit()">Submit</button>
+
+  <script>
+    function submit() {
+      /*var xml = $("#xml-in")[0].files[0];
+      console.log(xml);
+
+      var fr = new FileReader();
+
+      var p = new XMLSerializer();
+      var s = p.serializeToString(xml);
+
+      console.log(s);
+
+      var data = new FormData();
+      data.append("xml", xml, xml.name);
+
+      /*$.ajax({
+        url: "https://node.hres.ca/xml",
+        method: "POST",
+        data: data,
+        processData: false,
+        contentType: false,
+        success: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });*/
+
+      var xml = $("#xml-in")[0].files[0];
+      console.log(xml);
+      var fr = new FileReader();
+      fr.onload = (e) => {
+        console.log(typeof(e.target.result), e.target.result);
+        $.post("https://node.hres.ca/xml", {xml: e.target.result}, (res) => {
+          console.log(res);
+        });
+      }
+      fr.readAsText(xml);
+    }
+  </script>
+
+</body>
+</html>
