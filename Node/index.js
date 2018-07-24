@@ -200,7 +200,7 @@ api.post('/xml', /*multer.single("xml"),*/ (req, res) => {
     xsl += chunk;
   }).on('end', function() {
     var y = xslt.xmlParse(xsl);
-    var z = xsltProcess(x, y);
+    var z = xslt.xsltProcess(x, y);
 
     console.log(z);
   });
