@@ -46,7 +46,10 @@
         console.log(typeof(e.target.result), e.target.result);
         $.post("https://node.hres.ca/xml", {xml: e.target.result}, (res) => {
           console.log(res);
-        });
+        })
+          .fail((err) => {
+            console.log(err);
+          });
       }
       fr.readAsText(xml);
     }

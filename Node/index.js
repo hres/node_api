@@ -7,6 +7,7 @@ const parser = require('body-parser');
 //
 const Multer = require('multer');
 const xslt = require('xslt-processor');
+const util = require('util');
 const fs = require('fs');
 //
 const es = require('elasticsearch');
@@ -35,6 +36,8 @@ var multer = Multer({
     fileSize: 5 * 1024 * 1024
   }
 });
+
+const readFile = util.promisify(fs.readFile);
 //
 
 api.listen(c.API_PORT, () => {
@@ -192,7 +195,7 @@ api.post('/xml', /*multer.single("xml"),*/ async (req, res) => {
 
   try {
     var xml = xslt.xmlParse(req.body.xml);
-    var xslString = await fs.readFile("./public/dep/note.xsl");
+    var xslString = await readFile("./public/dep/note.xsl");
     var xsl = xslt.xmlParse(xslString);
     var out = xslt.xsltProcess(xml, xsl);
 
