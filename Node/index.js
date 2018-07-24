@@ -188,26 +188,19 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
 });
 
 // TODO: make XML module or create separate API
-api.post('/xml', /*multer.single("xml"),*/ (req, res) => {
+api.post('/xml', /*multer.single("xml"),*/ async (req, res) => {
 
-  var x = xslt.xmlParse(req.body.xml);
+  try {
+    var xml = xslt.xmlParse(req.body.xml);
+    var xslString = await fs.readFile("./public/dep/note.xsl");
+    var xsl = xslt.xmlParse(xslString);
+    var out = xslt.xsltProcess(xml, xsl);
 
-  var xsl = "";
-
-  var readStream = fs.createReadStream("./public/dep/note.xsl", "utf8");
-
-  readStream.on('data', function(chunk) {
-    xsl += chunk;
-  }).on('end', function() {
-    var y = xslt.xmlParse(xsl);
-    var z = xslt.xsltProcess(x, y);
-
-    console.log(z);
-  });
-
-  res.status(200).json({
-    success: true
-  });
+    res.status(200).send(out);
+  }
+  catch (err) {
+    res.status(500).json(err);
+  }
 
   /*if (!req.file) {
     res.status(404).json({
