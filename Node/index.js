@@ -19,9 +19,12 @@ const keymanager = require('./keymanager');
 var api = express();
 
 api.use(parser.urlencoded({
+  limit: "50mb",
   extended: false
 }));
-api.use(parser.json());
+api.use(parser.json({
+  limit: "50mb"
+}));
 
 var esclient = new es.Client({
   host: c.ELASTIC_HOST,
