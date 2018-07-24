@@ -205,6 +205,7 @@ api.post('/xml', /*multer.single("xml"),*/ async (req, res) => {
     res.status(200).send(xmlOut);
   }
   catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 
