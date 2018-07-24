@@ -12,13 +12,20 @@
 
   <script>
     function submit() {
-      var xml = $("#xml-in")[0].files[0];
+      /*var xml = $("#xml-in")[0].files[0];
       console.log(xml);
+
+      var fr = new FileReader();
+
+      var p = new XMLSerializer();
+      var s = p.serializeToString(xml);
+
+      console.log(s);
 
       var data = new FormData();
       data.append("xml", xml, xml.name);
 
-      $.ajax({
+      /*$.ajax({
         url: "https://node.hres.ca/xml",
         method: "POST",
         data: data,
@@ -30,7 +37,18 @@
         error: (err) => {
           console.log(err);
         }
-      });
+      });*/
+
+      var xml = $("#xml-in")[0].files[0];
+      console.log(xml);
+      var fr = new FileReader();
+      fr.onload = (e) => {
+        console.log(typeof(e.target.result), e.target.result);
+        $.post("https://node.hres.ca/xml", {xml: xml}, (res) => {
+          console.log(res);
+        });
+      }
+      fr.readAsText(xml);
     }
   </script>
 

@@ -4,9 +4,11 @@
 
 const express = require('express');
 const parser = require('body-parser');
+//
 const Multer = require('multer');
 const xslt = require('xslt-processor');
 const fs = require('fs');
+//
 const es = require('elasticsearch');
 const c = require('./config');
 const esroutes = require('./esroutes');
@@ -26,12 +28,14 @@ var esclient = new es.Client({
   requestTimeout: 10000
 });
 
+//
 var multer = Multer({
   storage: Multer.memoryStorage(),
   limits: {
     fileSize: 5 * 1024 * 1024
   }
 });
+//
 
 api.listen(c.API_PORT, () => {
 
@@ -184,9 +188,19 @@ esroutes.ENDPOINTS.forEach((endpoint) => {
 });
 
 // TODO: make XML module or create separate API
-api.post('/xml', multer.single("xml"), (req, res) => {
+api.post('/xml', /*multer.single("xml"),*/ (req, res) => {
 
-  if (!req.file) {
+  console.log(req.body.xml);
+
+  var x = xslt.xmlParse(req.body.xml);
+
+  console.log(x);
+
+  res.status(200).json({
+    success: true
+  });
+
+  /*if (!req.file) {
     res.status(404).json({
       success: false
     });
@@ -213,5 +227,5 @@ api.post('/xml', multer.single("xml"), (req, res) => {
     res.status(400).json({
       success: false
     });
-  }
+  }*/
 });
