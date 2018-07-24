@@ -9,6 +9,9 @@
     <input id="xml-in" type="file">
   </form>
   <button onclick="submit()">Submit</button>
+  <br>
+  <br>
+  <div id="res"></div>
 
   <script>
     function submit() {
@@ -46,6 +49,7 @@
         console.log(typeof(e.target.result), e.target.result);
         $.post("https://node.hres.ca/xml", {xml: e.target.result}, (res) => {
           console.log(res);
+          $("#res").html(res);
         })
           .fail((err) => {
             console.log(err);
