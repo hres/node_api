@@ -199,10 +199,11 @@ api.post('/xml', /*multer.single("xml"),*/ (req, res) => {
   readStream.on('data', function(chunk) {
     xsl += chunk;
   }).on('end', function() {
-    console.log(xsl);
-  });
+    var y = xslt.xmlParse(xsl);
+    var z = xsltProcess(x, y);
 
-  console.log(x);
+    console.log(z);
+  });
 
   res.status(200).json({
     success: true
