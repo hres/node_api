@@ -195,11 +195,11 @@ api.post('/xml', /*multer.single("xml"),*/ async (req, res) => {
 
   try {
     var xml = xslt.xmlParse(req.body.xml);
-    var xslString = await readFile("./public/dep/note.xsl");
+    var xslString = await readFile("./public/dep/note.xsl", "utf8");
     var xsl = xslt.xmlParse(xslString);
-    var out = xslt.xsltProcess(xml, xsl);
+    var xmlOut = xslt.xsltProcess(xml, xsl);
 
-    res.status(200).send(out);
+    res.status(200).send(xmlOut);
   }
   catch (err) {
     res.status(500).json(err);
