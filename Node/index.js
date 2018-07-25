@@ -4,12 +4,6 @@
 
 const express = require('express');
 const parser = require('body-parser');
-//
-const Multer = require('multer');
-const xslt = require('xslt-processor');
-const util = require('util');
-const fs = require('fs');
-//
 const es = require('elasticsearch');
 const c = require('./config');
 const esroutes = require('./esroutes');
@@ -19,29 +13,15 @@ const keymanager = require('./keymanager');
 var api = express();
 
 api.use(parser.urlencoded({
-  limit: "50mb",
   extended: false
 }));
-api.use(parser.json({
-  limit: "50mb"
-}));
+api.use(parser.json());
 
 var esclient = new es.Client({
   host: c.ELASTIC_HOST,
   log: c.ELASTIC_LOG,
   requestTimeout: 10000
 });
-
-//
-var multer = Multer({
-  storage: Multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024
-  }
-});
-
-const readFile = util.promisify(fs.readFile);
-//
 
 api.listen(c.API_PORT, () => {
 
@@ -191,50 +171,4 @@ esroutes.LANDINGS.forEach((landing) => {
 esroutes.ENDPOINTS.forEach((endpoint) => {
 
   createLinearRoute(endpoint);
-});
-
-// TODO: make XML module or create separate API
-api.post('/xml', /*multer.single("xml"),*/ async (req, res) => {
-
-  try {
-    var xml = xslt.xmlParse(req.body.xml);
-    var xslString = await readFile("./public/dep/business-rules.xsl", "utf8");
-    var xsl = xslt.xmlParse(xslString);
-    var xmlOut = xslt.xsltProcess(xml, xsl);
-
-    res.status(200).send(xmlOut);
-  }
-  catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-
-  /*if (!req.file) {
-    res.status(404).json({
-      success: false
-    });
-  }
-  else if (req.file.mimetype === "text/xml") {
-    console.log(req.file.buffer);
-
-    var xml = fs.readFile(req.file.buffer, "utf8", (err, data) => { console.log(data) });
-
-    //var xml = xlst.xmlParse(req.file)
-
-    res.status(200).json({
-      success: true
-    });
-  }
-  else if (req.file.mimetype === "application/x-zip-compressed") {
-    console.log(req.file);
-
-    res.status(200).json({
-      success: true
-    });
-  }
-  else {
-    res.status(400).json({
-      success: false
-    });
-  }*/
 });
