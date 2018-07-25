@@ -13,7 +13,7 @@ const keymanager = require('./keymanager');
 var api = express();
 
 api.use(parser.urlencoded({
-  extended: false
+  extended: true
 }));
 api.use(parser.json());
 
