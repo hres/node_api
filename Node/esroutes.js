@@ -25,7 +25,7 @@ module.exports = {
       "ES_INDEX": "cv_reports_arrays_july_24"
     },
     {
-      "API_ENDPOINT": "/drug/event5",
+      "API_ENDPOINT": "/drug/event6",
       "ES_INDEX": "cv_reports_arrays_july_26"
     }
   ],
