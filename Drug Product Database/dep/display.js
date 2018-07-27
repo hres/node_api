@@ -58,7 +58,7 @@ $(document).ready(() => {
 
     var body = "";
 
-    (drug.active_ingredients).forEach((ing) => {
+    (drug.active_ingredients_detail).forEach((ing) => {
 
       body += "<tr>" +
         "<td>" + ing.ingredient + "</td>" +

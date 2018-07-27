@@ -85,7 +85,7 @@ function populateTable(data) {
       return a.history_date < b.history_date ? a.status : b.status;
     }) : drug.status[0].status;
 
-    var ingredients = $.map(drug.active_ingredients, (ing) => {
+    var ingredients = $.map(drug.active_ingredients_detail, (ing) => {
 
       return ing.ingredient + " (" + ing.strength + " " + ing.strength_unit + ")";
     }).join(", ");
