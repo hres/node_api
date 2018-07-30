@@ -80,10 +80,14 @@ function populateTable(data) {
 
     const drug = d.drug_product;
 
-    var status = (drug.status).length > 1 ? (drug.status).reduce((a, b) => {
+    console.log(drug);
 
-      return a.history_date < b.history_date ? a.status : b.status;
-    }) : drug.status[0].status;
+    /*var status = (drug.status_detail).length > 1 ? (drug.status_detail).reduce((a, b) => {
+
+      return a.history_date < b.history_date ? a.status_detail : b.status_detail;
+    }) : drug.status[0].status;*/
+
+    const status = drug.status_current;
 
     var ingredients = $.map(drug.active_ingredients_detail, (ing) => {
 

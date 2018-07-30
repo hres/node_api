@@ -14,9 +14,11 @@ $(document).ready(() => {
 
     $("#product-title").html(drug.brand_name);
 
-    const status = drug.status[0];
+    const status = drug.status_detail[0];
 
     $("#status").html("<strong>" + status.status + "</strong>");
+
+    console.log(drug);
 
     var statusDate = "N/A";
     var marketDate = "N/A";
