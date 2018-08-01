@@ -2,7 +2,6 @@
 const drugCode = window.location.search.substr(4);
 const documentURL = "https://rest-dev.hres.ca/dpd/dpd_json";
 const monographURL = "https://rest-dev.hres.ca/rest-dev/product_monographs";
-const monographHost = "https://pdf.hres.ca/dpd_pm/";
 
 $(document).ready(() => {
 
@@ -17,8 +16,6 @@ $(document).ready(() => {
     const status = drug.status_detail[0];
 
     $("#status").html("<strong>" + status.status + "</strong>");
-
-    console.log(drug);
 
     var statusDate = "N/A";
     var marketDate = "N/A";
@@ -72,41 +69,15 @@ $(document).ready(() => {
     $("#rmp").html("A Risk Management Plan (RMP) for this product " + (drug.risk_man_plan == "N" ? "was not" : "was") + " submitted.");
     $("#api-call").attr("href", url).attr("target", "_blank").html(url);
     $("#refresh").text(makeDate(drug.last_refresh));
+
+    if (drug.product_monograph_en_url) {
+      $("#monograph").html("<a href='" + drug.product_monograph_en_url + "' target='_blank'>Electronic Monograph (" + makeDate(drug.pm_date) + ")</a>");
+    }
+    else {
+      $("#monograph").html("No Electronic Monograph Available");
+    }
   });
-
-  const url2 = monographURL + "?select=*&drug_code=eq." + drugCode;
-
-  $.get(url2, (data) => {
-
-		if (data.length > 0) {
-			var mlink = "https://pdf.hres.ca/dpd_pm/";
-
-			var pm_number = data[0].pm_english_fname
-			var pm = 0;
-
-			for (var i = 1; i < data.length; i++) {
-				if (data[i].pm_english_fname > pm_number) {
-					pm_number = data[i].pm_english_fname;
-					pm = i;
-				}
-			}
-
-			$("#monograph").html("<a href='" + monographHost + maskCode(data[pm].pm_english_fname, 8) + ".PDF" + "' target='_blank'>Electronic Monograph (" + data[pm].pm_date + ")</a>");
-		}
-		else {
-			$("#monograph").html("No Electronic Monograph Available");
-		}
-	});
 });
-
-function maskCode(id, length) {
-
-    var code = "" + id;
-
-    while (code.length < length) code = "0" + code;
-
-    return code;
-}
 
 function makeDate(iso) {
 
