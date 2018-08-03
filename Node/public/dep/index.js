@@ -14,6 +14,11 @@ let termsOptions = {
       ticks: {
         beginAtZero: true
       }
+    }],
+    xAxes: [{
+      ticks: {
+        autoSkip: false
+      }
     }]
   }
 };

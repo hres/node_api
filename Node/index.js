@@ -5,6 +5,7 @@
 const express = require('express');
 const parser = require('body-parser');
 const es = require('elasticsearch');
+const morgan = require('morgan');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');

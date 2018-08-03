@@ -211,13 +211,11 @@
           <h4>Search:</h4>
           <p>Search for general keywords using <code>search=KEYWORD</code>. You can search for keywords in specific fields using the following syntax <code>search=FIELD:KEYWORD</code>. To search for multiple specific or general keywords join them using the <code>AND</code> or <code>OR</code> operators (<code>search=FIELD:KEYWORD1+AND+KEYWORD2</code>). You can access embedded fields using the <code>.</code> operator. You can limit a field by range using <code>search=FIELD:[DATE1+TO+DATE2]</code></p>
           <h4>Count:</h4>
-          <p>Aggregate on a field and return either term or histogram counts using <code>count=FIELD</code>. Term aggregration and histogram aggregation is determined automatically based on the fields value. For histogram aggregation fields, possible time intervals include <code>year</code>, <code>quarter</code>, <code>month</code>, <code>week</code>, or <code>day</code>. (<code>count=HISTOGRAMFIELD:INTERVAL</code>). The interval defaults to <code>day</code>. You can access embedded fields using the <code>.</code> operator.</p>
+          <p>Aggregate on a field and return either term or histogram counts using <code>count=FIELD</code>. Term aggregration and histogram aggregation is determined automatically based on the fields value. For histogram aggregation fields, possible time intervals include <code>year</code>, <code>quarter</code>, <code>month</code>, <code>week</code>, or <code>day</code>. (<code>count=HISTOGRAMFIELD:INTERVAL</code>). The interval defaults to <code>day</code>. You can access embedded fields using the <code>.</code> operator. For term aggregation, add <code>.keyword</code> after the field. (count=FIELD.keyword)</p>
           <h4>Skip:</h4>
           <p>A number used to offset the the first result. Defaults to <code>skip=0</code></p>
           <h4>Limit:</h4>
           <p>A number used to limit the maximum number of documents returned. Defaults to <code>limit=10</code>. Max value is <code>1000</code>.</p>
-          <!--<h4>Embedded:</h4>
-          <p>Set to <code>embedded=true</code> or <code>embedded=1</code> to request search parameters be matched in an embedded document. Defaults to <code>false</code> or <code>0</code> where documents are returned if they match the search parameters anywhere in the document.</p>-->
           <h2>Examples</h2>
           <p>Search for documents where the patient's gender is female.<br><code>?search=gender:female</code></p>
           <p>Search for documents where the patient's gender is female and a the outcome was recovered.<br><code>?search=gender:female+AND+outcome:recovered</code></p>
