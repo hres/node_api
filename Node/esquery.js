@@ -16,6 +16,7 @@ const HISTOGRAM_FIELDS = [
   "status_cancelled_postmarket_date",
   "status_detail.history_date",
   "status_detail.original_market_date",
+  "status_approved_date",
   "last_refresh"
 ];
 const HISTOGRAM_INTERVALS = [
