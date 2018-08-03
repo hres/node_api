@@ -12,8 +12,11 @@ const QS_LIST = [
 ];
 const HISTOGRAM_FIELDS = [
   "datintreceived",
-  "report.datintreceived",
-  "datreceived"
+  "datreceived",
+  "status_cancelled_postmarket_date",
+  "status_detail.history_date",
+  "status_detail.original_market_date",
+  "last_refresh"
 ];
 const HISTOGRAM_INTERVALS = [
   "year",
