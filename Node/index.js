@@ -5,12 +5,12 @@
 const express = require('express');
 const parser = require('body-parser');
 const es = require('elasticsearch');
-//const morgan = require('morgan');
-//const fs = require('fs');
+const morgan = require('morgan');
+const fs = require('fs');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
-const logger = require('./logger');
+//const logger = require('./logger');
 const keymanager = require('./keymanager');
 
 var api = express();
@@ -29,7 +29,7 @@ var esclient = new es.Client({
 api.listen(c.API_PORT, () => {
 
   console.log("listening on '" + c.API_LOCAL + "' or '" + c.API_HTTPS + "'");
-  logger.info("hello");
+  logger.info("server listening on :" + c.API_PORT);
 });
 
 api.use((req, res, next) => {
@@ -38,21 +38,27 @@ api.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "X-Key-Gen-Secret");
     next();
 });
-api.use(express.static("public"));
-/*
+api.use(express.static(path.join(__dirname, "public")));
+
+const infoLogStream = fs.createWriteStream(path.join(__dirname, "logs", "info.log"), {
+  flags: "a"
+});
+const errLogStream = fs.createWriteStream(path.join(__dirname, "logs", "err.log"), {
+  flags: "a"
+});
+
 api.use(morgan('combined', {
     skip: (req, res) => {
         return res.statusCode < 400
     },
-    stream: fs.createWriteStream(c.LOGS.ERR_FILE)
+    stream: errLogStream
 }));
 app.use(morgan('combined', {
     skip: (req, res) => {
         return res.statusCode >= 400
     },
-    stream: fs.createWriteStream(c.LOGS.INFO_FILE)
+    stream: infoLogStream
 }));
-*/
 
 api.set("json spaces", 2);
 
