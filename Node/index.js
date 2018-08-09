@@ -30,7 +30,7 @@ var esclient = new es.Client({
 api.listen(c.API_PORT, () => {
 
   console.log("listening on '" + c.API_LOCAL + "' or '" + c.API_HTTPS + "'");
-  logger.info("server listening on :" + c.API_PORT);
+  //logger.info("server listening on :" + c.API_PORT);
 });
 
 api.use((req, res, next) => {
