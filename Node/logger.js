@@ -9,13 +9,13 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.File({
       level: 'info',
-      filename: 'info.log',
+      filename: logsConfig.INFO_FILE,
       handleExceptions: true,
       json: true
     }),
     new winston.transports.File({
       level: 'error',
-      filename: 'err.log',
+      filename: logsConfig.ERR_FILE,
       handleExceptions: true,
       json: true
     })
