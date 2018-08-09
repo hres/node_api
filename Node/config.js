@@ -30,8 +30,8 @@ module.exports = {
     path: "./esclient.log"
   },
   "LOGS": {
-    "INFO_FILE": "./info.log",
-    "ERR_FILE": "./err.log"
+    "INFO_FILE": "public/logs/info.log",
+    "ERR_FILE": "/public/logs/err.log"
   },
   "KEY_GEN_SECRET": "01MuVFCyvw",
   "RESPONSE_META_DATA": {

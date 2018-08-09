@@ -11,7 +11,6 @@ const path = require('path');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
-//const logger = require('./logger');
 const keymanager = require('./keymanager');
 
 var api = express();
@@ -30,7 +29,6 @@ var esclient = new es.Client({
 api.listen(c.API_PORT, () => {
 
   console.log("listening on '" + c.API_LOCAL + "' or '" + c.API_HTTPS + "'");
-  //logger.info("server listening on :" + c.API_PORT);
 });
 
 api.use((req, res, next) => {
@@ -41,10 +39,10 @@ api.use((req, res, next) => {
 });
 api.use(express.static(path.join(__dirname, "public")));
 
-const infoLogStream = fs.createWriteStream(path.join(__dirname, "logs", "info.log"), {
+const infoLogStream = fs.createWriteStream(path.join(__dirname, "public", "logs", "info.log"), {
   flags: "a"
 });
-const errLogStream = fs.createWriteStream(path.join(__dirname, "logs", "err.log"), {
+const errLogStream = fs.createWriteStream(path.join(__dirname, "public", "logs", "err.log"), {
   flags: "a"
 });
 
