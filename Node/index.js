@@ -7,6 +7,7 @@ const parser = require('body-parser');
 const es = require('elasticsearch');
 const morgan = require('morgan');
 const fs = require('fs');
+const path = require('path');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
@@ -53,7 +54,7 @@ api.use(morgan('combined', {
     },
     stream: errLogStream
 }));
-app.use(morgan('combined', {
+api.use(morgan('combined', {
     skip: (req, res) => {
         return res.statusCode >= 400
     },
