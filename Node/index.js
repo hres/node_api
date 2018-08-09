@@ -6,6 +6,7 @@ const express = require('express');
 const parser = require('body-parser');
 const es = require('elasticsearch');
 const morgan = require('morgan');
+const fs = require('fs');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
@@ -41,13 +42,13 @@ api.use(morgan('combined', {
     skip: (req, res) => {
         return res.statusCode < 400
     },
-    stream: logger.errStream
+    stream: fs.createWriteStream(c.LOGS.ERR_FILE)
 }));
 app.use(morgan('combined', {
     skip: (req, res) => {
         return res.statusCode >= 400
     },
-    stream: logger.infoStream
+    stream: fs.createWriteStream(c.LOGS.INFO_FILE)
 }));
 
 api.set("json spaces", 2);
