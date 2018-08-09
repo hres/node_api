@@ -96,7 +96,7 @@ api.get('/_info', (req, res) => {
 
   // restrict which fields can be aggregated on and list them to return
 
-  const indices = esroutes.ENDPOINTS.map((endpoint) => {
+  var indices = esroutes.ENDPOINTS.map((endpoint) => {
     return endpoint.API_ENDPOINT;
   });
 

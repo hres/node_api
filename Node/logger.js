@@ -5,9 +5,7 @@
 const winston = require('winston');
 const logsConfig = require('./config').LOGS;
 
-winston.emitErrs = true;
-
-const logger = new winston.Logger({
+const logger = winston.createLogger({
   transports: [
     new winston.transports.File({
       level: 'info',
