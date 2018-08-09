@@ -1,10 +1,16 @@
 
 // Bimal Bhagrath
-// MODULE : api key management
+// MODULE : api key manager
 
 const crypto = require('crypto');
 
-module.exports.generateAPIKey = () => {
+exports.generateAPIKey = () => {
 
   return crypto.randomBytes(12).toString('hex');
+};
+
+exports.set = (key, email) => {
+
+  const time = new Date();
+  console.log("inserted key: " + key + " for email: " + email + " at " + time.toISOString());
 };

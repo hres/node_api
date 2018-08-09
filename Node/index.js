@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
+const logger = require('./logger');
 const keymanager = require('./keymanager');
 
 var api = express();
@@ -36,6 +37,18 @@ api.use((req, res, next) => {
     next();
 });
 api.use(express.static("public"));
+api.use(morgan('combined', {
+    skip: (req, res) => {
+        return res.statusCode < 400
+    },
+    stream: logger.errStream
+}));
+app.use(morgan('combined', {
+    skip: (req, res) => {
+        return res.statusCode >= 400
+    },
+    stream: logger.infoStream
+}));
 
 api.set("json spaces", 2);
 
@@ -43,9 +56,7 @@ api.get('/getkey', (req, res) => {
 
   if (req.headers.hasOwnProperty("x-key-gen-secret") && req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET && req.query.hasOwnProperty("email")) {
     const apiKey = keymanager.generateAPIKey();
-
-    // store key with email
-    console.log(req.query.email + " " + apiKey);
+    keymanager.set(apiKey, req.query.email);
 
     res.status(201).json({
       key: apiKey
@@ -85,12 +96,18 @@ api.get('/_info', (req, res) => {
 
   // restrict which fields can be aggregated on and list them to return
 
-  let indices = esroutes.ENDPOINTS.map((endpoint) => {
+  const indices = esroutes.ENDPOINTS.map((endpoint) => {
     return endpoint.API_ENDPOINT;
   });
 
+  const logs = {
+    info: c.LOGS.INFO_FILE,
+    error: c.LOGS.ERR_FILE
+  }
+
   return res.status(200).json({
-    indices: indices
+    indices: indices,
+    logs: logs
   });
 });
 
@@ -138,27 +155,6 @@ var createLinearRoute = (endpoint) => {
     }
   });
 };
-
-/*var createDirectRoute = (endpoint) => {
-
-  var route = endpoint.API_ENDPOINT;
-  var index = endpoint.ES_INDEX;
-
-  api.post(route, async (req, res) => {
-
-    try {
-      var esbody = esquery.okRequest(req.body);
-    }
-    catch (err) {
-      if (err.hasOwnProperty("status")) {
-        res.status(err.status).json(err);
-      }
-      else {
-        res.status(500).json(err);
-      }
-    }
-  });
-}*/
 
 // create dynamic landings for all defined landings in esroutes.js configuration
 /*
