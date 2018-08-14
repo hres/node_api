@@ -1,5 +1,5 @@
 
-let histogramOptions = {
+const histogramOptions = {
   scales: {
     yAxes: [{
       ticks: {
@@ -8,7 +8,7 @@ let histogramOptions = {
     }]
   }
 };
-let termsOptions = {
+const termsOptions = {
   scales: {
     yAxes: [{
       ticks: {
@@ -48,16 +48,14 @@ $(document).ready(() => {
           break;
       }
     });
-  });
 
-  // resources not loading allow timeout... fix this
-  setTimeout(() => {
     buildQuery();
-  }, 1000);
-
+  });
 });
 
 function getAPIKey() {
+
+  // TODO: send by email, redirect to 'check your email' page with target="_blank"
 
   var email = $("#get-key-email").val();
 
@@ -77,6 +75,8 @@ function getAPIKey() {
 }
 
 function retrieveAPIKey() {
+
+  // TODO: send by email, redirect to 'check your email' page with target="_blank"
 
   var email = $("#retrieve-key-email").val();
   console.log(email);
@@ -139,8 +139,8 @@ function setChart(rawData) {
 
   $("#ctx-open").prop("hidden", false);
 
-  let ctxDiv = document.getElementById('data-chart');
-  let data = rawData.plot == "histogram" ? buildHistogramData(rawData.results) : buildTermsData(rawData.results);
+  const ctxDiv = document.getElementById('data-chart');
+  const data = rawData.plot == "histogram" ? buildHistogramData(rawData.results) : buildTermsData(rawData.results);
 
   ctx = new Chart(ctxDiv, {
     type: rawData.plot == "histogram" ? "line" : "bar",
@@ -151,11 +151,16 @@ function setChart(rawData) {
 
 function buildHistogramData(results) {
 
-  let labels = results.map((result) => {
-    return result.key_as_string
+  const labels = results.map((result) => {
+
+    const date = new Date(result.key_as_string);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    return date.getFullYear() + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
   });
 
-  let datasets = [
+  const datasets = [
     {
       label: "Health Canada",
       data: results.map((result) => {
@@ -175,11 +180,11 @@ function buildHistogramData(results) {
 
 function buildTermsData(results) {
 
-  let labels = results.map((result) => {
+  const labels = results.map((result) => {
     return result.key
   });
 
-  let datasets = [
+  const datasets = [
     {
       label: "Health Canada",
       data: results.map((result) => {
