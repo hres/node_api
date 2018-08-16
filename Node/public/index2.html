@@ -29,7 +29,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
   <!-- use 'dep/index.min.js' if required -->
-  <script src="dep/index.js"></script>
+  <script src="dep/index2.js"></script>
 </head>
 <body class="secondary" vocab="http://schema.org/" typeof="WebPage">
   <!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
@@ -114,42 +114,125 @@
     </nav>
   </header>
   <main role="main" property="mainContentOfPage" class="container gc-theme">
-    <div class="row mrgn-tp-lg">
-      <div class="col-md-4" style="font-weight: 300; font-size: 26px">Health Canada APIs <span style="color: grey; font-size: 18px">(v1.1.0)</span></div>
-      <div class="col-md-8">
-        <div class="btn-group">
-          <a href="index.html" class="btn btn-primary">Getting Started</a>
-          <a href="docs.html" class="btn btn-default">Endpoints & Documentation</a>
-          <a href="live.html" class="btn btn-default">API Playground</a>
-          <a href="stats.html" class="btn btn-default">API Statistics</a>
-        </div>
+    <h1 property="name" id="wb-cont">Health Canada APIs <small>(v1.0.0)</small></h1>
+    <div class="wb-tabs">
+      <div class="tabpanels">
+        <details id="details-panel1">
+          <summary>Getting Started</summary>
+          <p class="mrgn-tp-lg">The Health Canada APIs provide an application independent method of querying several raw Health Canada datasets and data sources. The following APIs serve JSON responses and will require an API key to access outside the canada.ca domain.</p>
+          <section>
+            <h2>Get A New API Key</h2>
+            <input id="get-key-email" type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
+            <button class="btn btn-primary" style="display: inline-block" onclick="getAPIKey()">Register</button>
+            <div id="new-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem"></div>
+          </section>
+          <section>
+            <h2>Forgot API Key?</h2>
+            <input id="retrieve-key-email" type="text" class="form-control" style="width: 250px; display: inline-block" placeholder="Email Address">
+            <button class="btn btn-primary" style="display: inline-block" onclick="retrieveAPIKey()">Retrieve</button>
+            <div id="retrieve-key-div" style="display: inline-block; margin-left: 40px; font-size: 2rem"></div>
+          </section>
+          <section>
+            <h2>Apps Built Using Health Canada APIs</h2>
+            <p>Coming Soon</p>
+          </section>
+          <section>
+            <h2>Contributors</h2>
+            <ul class="lst-spcd">
+              <li>Daniel Buijs</li>
+              <li>Bimal Bhagrath</li>
+              <li>James Hopkins</li>
+            </ul>
+          </section>
+          <br>
+        </details>
+        <details id="details-panel2">
+          <summary>API Endpoints</summary>
+          <p class="mrgn-tp-lg">A list of possible endpoints can be found below. These endpoints can be accessed via <code>https://health-products.canada.ca/api/&ltENDPOINT&gt</code>.</p>
+          <h2>drug/event</h2>
+          <p>Data on drug products and related events and outcomes.</p>
+          <h2>drug/product</h2>
+          <p>Data on drug products, companies and active ingredients.</p>
+        </details>
+        <details id="details-panel3">
+          <summary>Documentation</summary>
+          <p class="mrgn-tp-lg">### Documentation intro here</p>
+          <p>View the <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/medeffect-canada/adverse-reaction-database/glossary.html" target="_blank">fields glossary</a> and <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/medeffect-canada/adverse-reaction-database/canada-vigilance-adverse-reaction-online-database-data-structures.html">data structure</a> for definitions and interpretation of fields in the Canada Vigilance Adverse Reactions database.</p>
+          <h2>Live Data</h2>
+          <form onsubmit="return false;">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="query">Query:</label>
+                <input id="query" type="text" class="form-control" placeholder="https://node.hres.ca" style="width: 100%; cursor: auto" disabled>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2" style="margin-top: 10px">
+                <label for="query-endpoint">Endpoint:</label>
+                <select id="query-endpoint" class="form-control" style="width: 100%">
+                  <optgroup id="drug_ends" label="Drugs"></optgroup>
+                  <optgroup id="food_ends" label="Foods"></optgroup>
+                  <optgroup id="device_ends" label="Devices"></optgroup>
+                  <optgroup id="other_ends" label="Other"></optgroup>
+                </select>
+              </div>
+              <div class="col-sm-6" style="margin-top: 10px">
+                <label for="query-search">Search:</label>
+                <input id="query-search" class="form-control" style="width: 100%">
+              </div>
+              <div class="col-sm-2" style="margin-top: 10px">
+                <label for="query-skip">Skip:</label>
+                <input id="query-skip" class="form-control" style="width: 100%">
+              </div>
+              <div class="col-sm-2" style="margin-top: 10px">
+                <label for="query-limit">Limit:</label>
+                <input id="query-limit" class="form-control" value="10" style="width: 100%" disabled>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4" style="margin-top: 10px">
+                <label for="query-count">Count:</label>
+                <input id="query-count" class="form-control" style="width: 100%">
+              </div>
+              <div class="col-sm-3">
+                <button id="try" class="btn btn-primary" onclick="buildQuery()" style="margin-top: 37px">Try It Out</button>
+              </div>
+            </div>
+          </form>
+          <div id="ctx-open" hidden>
+            <h1 style="text-align: center">Visualize Data</h1>
+            <canvas id="data-chart"></canvas>
+          </div>
+          <textarea id="json-response" class="form-control" style="margin-top: 20px; min-width: 100%; min-height: 250px; font-size: 1.2rem; font-family: monospace; cursor: auto" disabled></textarea>
+          <hr>
+          <h2>Build Queries</h2>
+          <h4>Search:</h4>
+          <p>Search for general keywords using <code>search=KEYWORD</code>. You can search for keywords in specific fields using the following syntax <code>search=FIELD:KEYWORD</code>. To search for multiple specific or general keywords join them using the <code>AND</code> or <code>OR</code> operators (<code>search=FIELD:KEYWORD1+AND+KEYWORD2</code>). You can access embedded fields using the <code>.</code> operator. You can limit a field by range using <code>search=FIELD:[DATE1+TO+DATE2]</code> or <code>search=FIELD:[VALUE1+TO+VALUE2]</code>.</p>
+          <h4>Count:</h4>
+          <p>Aggregate on a field and return either term or histogram counts using <code>count=FIELD</code>. Term aggregration and histogram aggregation is determined automatically based on the fields value. For histogram aggregation fields, possible time intervals include <code>year</code>, <code>quarter</code>, <code>month</code>, <code>week</code>, or <code>day</code>. (<code>count=HISTOGRAMFIELD:INTERVAL</code>). The interval defaults to <code>day</code>. You can access embedded fields using the <code>.</code> operator. For term aggregation, add <code>.keyword</code> after the field. (<code>count=FIELD.keyword</code>).</p>
+          <h4>Skip:</h4>
+          <p>A number used to offset the the first result. Defaults to <code>skip=0</code>.</p>
+          <h4>Limit:</h4>
+          <p>A number used to limit the maximum number of documents returned. Defaults to <code>limit=10</code>. Max value is <code>1000</code>.</p>
+          <hr>
+          <h2>Responses</h2>
+          <h4>/drug/event</h4>
+          <h4>/drug/product</h4>
+          <hr>
+          <h2>Examples</h2>
+          <h4>/drug/event</h4>
+          <p>Search for documents where the patient's gender is female.<br><code>?search=patient_gender:female</code></p>
+          <p>Search for documents where the patient's gender is female and a the outcome was recovered.<br><code>?search=patient_gender:female+AND+outcome:recovered</code></p>
+          <p>Search for documents where the report date is between 1997 and 2003.<br><code>?search=datintreceived:[1997+TO+2003]</code></p>
+          <p>Search for documents where the report date is between 1980 and 1990 and count the reports by year.<br><code>?search=datintreceived:[1980+TO+1990]&count=datintreceived:year</code></p>
+          <p>Count documents by the suspect report drug.<br><code>?count=report_drugname_suspect.keyword</code></p>
+          <h4>/drug/product</h4>
+        </details>
+        <details id="details-panel4">
+          <summary>Statistics</summary>
+        </details>
       </div>
     </div>
-    <h1 property="name" id="wb-cont">Getting Started</h1>
-    <div class="mrgn-tp-md">### DOCUMENTATION INTRO --- The Health Canada APIs provide an application independent method of querying several raw Health Canada datasets and data sources. The following APIs serve JSON responses and will require an API key to access outside the canada.ca domain.</div>
-    <div class="row">
-      <div class="col-md-8">
-        <h2><a href="docs.html" style="font-size: 26px; text-decoration: none">Endpoints & Documentation</a></h2>
-        <h2><a href="live.html" style="font-size: 26px; text-decoration: none; padding: 0">API Playground</a></h2>
-        <h2><a href="stats.html" style="font-size: 26px; text-decoration: none; margin: 0">API Statistics</a></h2>
-      </div>
-      <div class="col-md-4">
-        <h2>API Keys</h2>
-        <h5>New Users:</h5>
-        <button class="btn btn-primary" style="width: 275px" onclick="getAPIKey()">Register New API Key</button>
-        <h5>Existing Users:</h5>
-        <input id="manage-keys-email" type="text" class="form-control" style="width: 275px" placeholder="Email Address">
-        <input id="manage-keys-password" type="password" class="form-control mrgn-tp-sm" style="width: 275px" placeholder="Password">
-        <small style="margin-left: 5px"><a href="#">Forgot Password?</a></small><br>
-        <button class="btn btn-primary mrgn-tp-sm" style="width: 275px" onclick="manageAPIKeys()">Manage API Keys</button>
-      </div>
-    </div>
-    <h2>Apps Built Using our APIs</h2>
-    <p>Coming soon.</p>
-    <h2>Contributors</h2>
-    <p>Dan Buijs - <em>### INFO</em></p>
-    <p>Bimal Bhagrath - <em>### INFO</em></p>
-    <p>James Hopkins - <em>### INFO</em></p>
     <div class="row">
       <section class="col-xs-12">
         <h2>More About Health Canada APIs</h2>
