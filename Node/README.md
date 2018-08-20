@@ -58,3 +58,7 @@ To add features and tweak this API, please fork the repository and refer to the 
 
 ## Logging
 Logs are being output to `/public/info.log` and `/public/err.log`. These files are exposed publically on express.static, to make to remove them form express.static, move them out of the `/public` directory and configure the morgan middleware accordingly.
+
+## /public
+
+## API Keys
