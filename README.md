@@ -1,5 +1,4 @@
 # Health Canada APIs Projects
-Health Canada API wrapper around ElasticSearch
 
 ## Node
 NodeJS server used as an API wrapper around ElasticSearch.
