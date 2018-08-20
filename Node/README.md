@@ -38,3 +38,20 @@ To update all packages run command `npm update -g`
 - express `4.16.3` [API framework]
 - morgan `1.9.0` [used to format logs and create write streams for info vs err]
 
+## Maintenance
+
+### config.js
+Environment variables are in this file, consider passing protected information (passwords, api keys...) to `process.env` for production
+
+### Adding and deleting routes
+To add or delete a route (i.e. /drug/route) 2 changes need to be made. In the esroutes.js file modify the default exports "ENDPOINTS" array. Each route is represented by an object as follows:
+```text
+{
+  "API_ENDPOINT: "/landing/endpoint", // part of the HTTP request
+  "ES_INDEX": "elasticsearch_index" // the ElasticSeach index the corresponds to that endpoint
+}
+```
+All count aggregations default to term aggregations, if the field requires histogram aggregation you must specify the fields in the esquery.js file and append the field name to the "HISTOGRAM_FIELDS" array.
+
+## Updating
+To add features and tweak this API, please fork the repository and refer to the comments in the code to guide you.
