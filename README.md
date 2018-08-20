@@ -1,7 +1,7 @@
 # Health Canada APIs Projects
 
-## Node
+### Node
 NodeJS server used as an API wrapper around ElasticSearch.
 
-## Drug Product Database
+### Drug Product Database
 Web application for querying the Drug Product Database.
