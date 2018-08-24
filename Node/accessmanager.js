@@ -13,6 +13,8 @@ var pool = new Pool({
   port: 5432
 });
 
+pool.connect();
+
 exports.newAccount = async (email, password) => {
 
   const salt = crypto.randomBytes(8).toString('hex');
@@ -31,25 +33,21 @@ exports.newAccount = async (email, password) => {
   const insertKeyValues = [email, key];
 
   try {
-    await pool.connect();
     var users = await pool.query(userQuery, userValues);
 
     if (users.rows.length < 1) {
         var insertUser = await pool.query(insertUserQuery, insertUserValues);
         var insertKey = await pool.query(insertKeyQuery, insertKeyValues);
 
-        await pool.end();
         return {
           user_email: email,
           api_key: key
         };
     }
 
-    await pool.end();
     throw "email already in use";
   }
   catch (err) {
-    await pool.end();
     throw err;
   }
 };
