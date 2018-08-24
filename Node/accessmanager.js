@@ -2,10 +2,10 @@
 // Bimal Bhagrath
 // MODULE : api key manager
 
-const { pg } = require('pg');
+const { Client } = require('pg');
 const crypto = require('crypto');
 
-var pgClient = new pg();
+var pgClient = new Client();
 
 exports.newAccount = async (email, password) => {
 
