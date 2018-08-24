@@ -4,7 +4,7 @@
 
 function getAPIKey() {
 
-  console.log("501: Not Implemented.");
+  window.open("https://node.hres.ca/new.html", "_blank");
 };
 
 function manageAPIKeys() {

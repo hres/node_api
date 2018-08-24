@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title>New Account</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+</head>
+<body>
+  <style>
+    body { font-family: monospace; padding: 20px }
+  </style>
+
+  <form onsubmit="return false;">
+    <p style="color: red; display: none" id="failed"></p>
+    <label for="email">Email Address:</label>
+    <input id="email" placeholder="user@example.com"><br><br>
+    <label for="password-1">Password:</label>
+    <input id="password-1" type="password"><br><br>
+    <label for="password-2">Confirm password:</label>
+    <input id="password-2" type="password"><br><br>
+    <button onclick="go()">Get Access</button>
+  </form>
+  <p id="success" style="display: none">Success! Your API Key is: <span id="key"></span>, you can manage you API keys by logging in with your email and password from the Health Canada APIs page.</p>
+
+  <script>
+
+    function go() {
+      var password1 = $("#password-1").val();
+      var password2 = $("#password-2").val();
+      var email = $("#email").val();
+
+      if (password1 !== password2) {
+        $("#failed").text("passwords don't match");
+        $("#failed").show();
+      }
+      else if (email.indexOf("@") < 0) {
+        $("#failed").text("invalid email address");
+        $("#failed").show();
+      }
+      else {
+        var data = {
+          email: email,
+          password: password1
+        };
+
+        $.ajax({
+          url: "https://node.hres.ca/account",
+          type: "POST",
+          headers: {
+            "x-key-gen-secret": "01MuVFCyvw"
+          },
+          data: data,
+          success: (res) => {
+            $("form").hide();
+            $("#key").text(res.key);
+            $("#success").show();
+          },
+          error: (err) => {
+            $("#failed").text(JSON.stringify(err)).show();
+          }
+        });
+      }
+    }
+
+  </script>
+</body>
+</html>

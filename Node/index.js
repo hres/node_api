@@ -8,11 +8,10 @@ const es = require('elasticsearch');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
-const pg = require('pg');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
-const keymanager = require('./keymanager');
+const accessManager = require('./accessmanager');
 
 var api = express();
 
@@ -62,54 +61,56 @@ api.use(morgan('combined', {
 
 api.set("json spaces", 2);
 
-api.get('/getkey', (req, res) => {
+api.post('/account', async (req, res) => {
 
-  if (req.headers.hasOwnProperty("x-key-gen-secret") && req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET && req.query.hasOwnProperty("email")) {
-    const apiKey = keymanager.generateAPIKey();
-    keymanager.set(apiKey, req.query.email);
+  if (req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET && req.body.email && req.body.password) {
+    try {
+      const account = await accessManager.newAccount(req.body.email, req.body.password);
 
-    res.status(201).json({
-      key: apiKey
-    });
+      res.status(201).json(account);
+    }
+    catch (err) {
+      res.status(409).json(err);
+    }
   }
   else {
     res.status(400).json({
-      error: "unable to generate api key"
+      error: "invalid request"
     });
   }
 });
 
 //api.post('/lostkey', (req, res) => {});
 
-// restrict to no public access
-api.get('/statistics', (req, res) => {
+//api.post('/getuser', (req, res) => {});
 
-  // include actual statistics from logs
-  res.status(200).json({
-    datasets: {
-      drugs: {},
-      foods: {},
-      devices: {},
-      other: {}
-    },
-    api_calls: {
-      time: [0],
-      drugs: 0,
-      foods: 0,
-      devices: 0,
-      other: 0
-    }
-  });
+api.use((req, res, next) => {
+
+  if (req.query.hasOwnProperty("key") && accessManager.verifyKey(req.query.key)) {
+    next();
+  }
+  else {
+    res.status(401).json({
+      error: "invalid api key"
+    });
+  }
 });
 
-api.get('/_info', (req, res) => {
+/*
+api.get('/statistics', (req, res) => {
 
-  // restrict which fields can be aggregated on and list them to return
+  res.status(200).json({});
+});
+*/
+
+// get info about endpoints and log files
+api.get('/_info', (req, res) => {
 
   const indices = esroutes.ENDPOINTS.map((endpoint) => {
     return endpoint.API_ENDPOINT;
   });
 
+  // move log info to GET /statistics route
   const logs = {
     info: c.LOGS.INFO_FILE,
     error: c.LOGS.ERR_FILE
@@ -121,6 +122,7 @@ api.get('/_info', (req, res) => {
   });
 });
 
+// format ElasticSearch JSON response
 function includeElasticResult(esres) {
 
   const stripped = esquery.strip(esres);
@@ -133,9 +135,8 @@ function includeElasticResult(esres) {
   };
 }
 
-//var createLanding = (landing) => {};
-
-var createLinearRoute = (endpoint) => {
+// dynamic router creation for all data endpoints
+var createRouter = (endpoint) => {
 
   var route = endpoint.API_ENDPOINT;
   var index = endpoint.ES_INDEX;
@@ -166,16 +167,8 @@ var createLinearRoute = (endpoint) => {
   });
 };
 
-// create dynamic landings for all defined landings in esroutes.js configuration
-/*
-esroutes.LANDINGS.forEach((landing) => {
-
-  createLanding(landing);
-});
-*/
-
-// create dynamic endpoints for all defined endpoints in esroutes.js configuration
+// generate router
 esroutes.ENDPOINTS.forEach((endpoint) => {
 
-  createLinearRoute(endpoint);
+  createRouter(endpoint);
 });
