@@ -50,7 +50,7 @@
           data: data,
           success: (res) => {
             $("form").hide();
-            $("#key").text(res.key);
+            $("#key").text(res.api_key);
             $("#success").show();
           },
           error: (err) => {

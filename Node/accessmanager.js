@@ -39,7 +39,7 @@ exports.newAccount = async (email, password) => {
         var insertUser = await pool.query(insertUserQuery, insertUserValues);
 
         while (!success) {
-          key = crypto.randomBytes(16).toString('hex');
+          key = crypto.randomBytes(8).toString('hex');
           const insertKeyValues = [email, key];
 
           try {
@@ -47,7 +47,6 @@ exports.newAccount = async (email, password) => {
              success = true;
           }
           catch (err) {
-            console.log(err);
             success = false;
           }
         }
@@ -63,7 +62,6 @@ exports.newAccount = async (email, password) => {
     throw "email already in use";
   }
   catch (err) {
-    console.log(err);
     await pool.end();
     throw err;
   }
