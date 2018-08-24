@@ -39,7 +39,7 @@ exports.newAccount = async (email, password) => {
         var insertUser = await pool.query(insertUserQuery, insertUserValues);
 
         while (!success) {
-          key = cryto.randomBytes(16).toString('hex');
+          key = crypto.randomBytes(16).toString('hex');
           const insertKeyValues = [email, key];
 
           try {
