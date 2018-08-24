@@ -116,9 +116,6 @@ api.use((req, res, next) => {
   if (req.query.hasOwnProperty("key") && accessManager.verifyKey(req.query.key)) {
     next();
   }
-  else if (req.referer === "https://node.hres.ca/live.html") {
-    next();
-  }
   else {
     res.status(401).json({
       error: "invalid api key"

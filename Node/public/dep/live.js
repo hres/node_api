@@ -1,4 +1,5 @@
 
+const defaultKey = "40e40966014eb7ac";
 
 const histogramOptions = {
   scales: {
@@ -84,7 +85,7 @@ function buildQuery() {
     }
   }
 
-  query = encodeURI(query);
+  query = encodeURI(query + "key=" + defaultKey);
 
   $("#query").val(query);
 
