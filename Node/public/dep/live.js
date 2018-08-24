@@ -85,11 +85,11 @@ function buildQuery() {
     }
   }
 
-  query = encodeURI(query + "key=" + defaultKey);
+  query = encodeURI(query);
 
   $("#query").val(query);
 
-  $.get(query, (res) => {
+  $.get(query + "&key=" + defaultKey, (res) => {
 
     $("#ctx-open").prop("hidden", true);
     $("#json-response").val(JSON.stringify(res, null, 2));
