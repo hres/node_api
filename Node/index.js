@@ -116,6 +116,9 @@ api.use((req, res, next) => {
   if (req.query.hasOwnProperty("key") && accessManager.verifyKey(req.query.key)) {
     next();
   }
+  else if (req.host === "node.hres.ca") {
+    next();
+  }
   else {
     res.status(401).json({
       error: "invalid api key"
