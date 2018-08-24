@@ -8,7 +8,8 @@ const QS_LIST = [
   "search",
   "count",
   "skip",
-  "limit"
+  "limit",
+  "key"
 ];
 const HISTOGRAM_FIELDS = [
   "datintreceived",
@@ -17,7 +18,8 @@ const HISTOGRAM_FIELDS = [
   "status_detail.history_date",
   "status_detail.original_market_date",
   "status_approved_date",
-  "last_refresh"
+  "last_refresh",
+  "licence_date"
 ];
 const HISTOGRAM_INTERVALS = [
   "year",

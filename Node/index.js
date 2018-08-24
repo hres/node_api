@@ -8,6 +8,7 @@ const es = require('elasticsearch');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
+const pg = require('pg');
 const c = require('./config');
 const esroutes = require('./esroutes');
 const esquery = require('./esquery');
