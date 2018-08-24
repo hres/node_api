@@ -15,24 +15,56 @@ var pool = new Pool({
 
 exports.newAccount = async (email, password) => {
 
-  const key = crypto.randomBytes(12).toString('hex');
+  const salt = crypto.randomBytes(8).toString('hex');
+  const pass = crypto.createHash('sha256').update(password + salt).digest('hex');
+
+  const time = new Date();
+
+  const pgDate = time.getFullYear + "-" + (time.getMonth() < 9 ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1)) + "-" + time.getDate();
 
   const userQuery = "SELECT * FROM users WHERE user_email = $1";
   const userValues = [email];
+  const insertUserQuery = "INSERT INTO users(user_email, salt, password, sign_up_date) VALUES($1, $2, $3, $4)";
+  const insertUserValues = [email, salt, pass, pgDate];
+  const insertKeyQuery = "INSERT INTO api_keys(user_email, key) VALUES($1, $2)";
 
   try {
     await pool.connect();
+    var users = await pool.query(userQuery, userValues);
 
-    let users = await pool.query(userQuery, userValues);
+    if (users.row.length < 1) {
+        var success = false;
+        var key;
 
-    console.log(users);
+        var insertUser = await pool.query(insertUserQuery, insertUserValues);
+
+        while (!success) {
+          key = cryto.randomBytes(16).toString('hex');
+          const insertKeyValues = [email, key];
+
+          try {
+             var insertKey = await pool.query(insertKeyQuery, insertKeyValues);
+             success = true;
+          }
+          catch (err) {
+            console.log(err);
+            success = false;
+          }
+        }
+
+        await pool.end();
+        return {
+          user_email: email,
+          api_key: key
+        };
+    }
 
     await pool.end();
-
-    return true;
+    throw "email already in use";
   }
   catch (err) {
     console.log(err);
+    await pool.end();
     throw err;
   }
 };
