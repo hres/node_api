@@ -32,7 +32,7 @@ exports.newAccount = async (email, password) => {
     await pool.connect();
     var users = await pool.query(userQuery, userValues);
 
-    if (users.row.length < 1) {
+    if (users.rows.length < 1) {
         var success = false;
         var key;
 
