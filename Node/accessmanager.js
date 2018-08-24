@@ -2,10 +2,16 @@
 // Bimal Bhagrath
 // MODULE : api key manager
 
-const { Client } = require('pg');
+const { Pool } = require('pg');
 const crypto = require('crypto');
 
-var pgClient = new Client();
+var pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "api_admin",
+  password: "",
+  port: 5432
+});
 
 exports.newAccount = async (email, password) => {
 
@@ -15,11 +21,13 @@ exports.newAccount = async (email, password) => {
   const userValues = [email];
 
   try {
-    await pgClient.connect();
+    await pool.connect();
 
-    let users = await pgClient.query(userQuery, userValues);
+    let users = await pool.query(userQuery, userValues);
 
     console.log(users);
+
+    await pool.end();
 
     return true;
   }
