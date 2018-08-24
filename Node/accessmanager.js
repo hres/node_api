@@ -6,10 +6,10 @@ const { Pool } = require('pg');
 const crypto = require('crypto');
 
 var pool = new Pool({
-  user: "postgres",
+  user: "manager",
   host: "localhost",
   database: "api_admin",
-  password: "",
+  password: "api_manager",
   port: 5432
 });
 
@@ -32,6 +32,7 @@ exports.newAccount = async (email, password) => {
     return true;
   }
   catch (err) {
+    console.log(err);
     throw err;
   }
 };
