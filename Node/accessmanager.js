@@ -20,7 +20,7 @@ exports.newAccount = async (email, password) => {
 
   const time = new Date();
 
-  const pgDate = time.getFullYear + "-" + (time.getMonth() < 9 ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1)) + "-" + time.getDate();
+  const pgDate = time.getFullYear() + "-" + (time.getMonth() < 9 ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1)) + "-" + time.getDate();
 
   const userQuery = "SELECT * FROM users WHERE user_email = $1";
   const userValues = [email];
