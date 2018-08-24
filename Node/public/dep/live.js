@@ -35,6 +35,7 @@ $(document).ready(() => {
       var path = index.split("/");
 
       switch (path[1]) {
+        case "nhp":
         case "drug":
           $("#drug_ends").append("<option value='" + index + "'>" + index + "</option>");
           break;

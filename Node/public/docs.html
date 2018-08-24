@@ -124,6 +124,8 @@
       </div>
     </div>
     <h1 property="name" id="wb-cont">Endpoints</h1>
+    <h2><a href="#nhp-product-docs">/nhp/product</a></h2>
+    <p>Data on natural health products, companies and active ingredients.</p>
     <h2><a href="#drug-event-docs">/drug/event</a></h2>
     <p>Data on drug products and related events and outcomes.</p>
     <h2><a href="#drug-product-docs">/drug/product</a></h2>
@@ -151,7 +153,109 @@
         <tr><td style="width: 35%">### FDA --- Frequency of API updates</td><td>### INFO</td></tr>
       </tbody>
     </table>
-    <h3>Responses</h3>
+    <h3>Response</h3>
+    <div class="row mrgn-bttm-sm">
+      <div class="col-md-3">death</div><div class="col-md-9"><code>String</code></div>
+    </div>
+    <div class="row mrgn-bttm-sm">
+      <div class="col-md-3">source</div><div class="col-md-9"><code>String</code></div>
+    </div>
+    <div class="row mrgn-bttm-sm">
+      <div class="col-md-3">outcome</div><div class="col-md-9"><code>String</code></div>
+    </div>
+    <div class="row mrgn-bttm-sm">
+      <div class="col-md-3">reactions</div><div class="col-md-9"><code>Array</code></div>
+    </div>
+    <div class="row mrgn-bttm-sm">
+      <div class="col-md-3" style="padding-left: 40px">reactions.pt_name</div><div class="col-md-9"><code>String</code></div>
+    </div>
+    <div class="row">
+      <div class="col-md-3" style="padding-left: 40px">reactions.soc_name</div><div class="col-md-9"><code>String</code></div>
+    </div>
+    <div class="row">
+      <div class="col-md-3" style="padding-left: 40px">reactions.reaction_id</div><div class="col-md-9"><code>String</code></div>
+    </div>
+    <!--
+    {
+      "_index": "drug_event",
+      "_type": "drug_event",
+      "_id": "115233",
+      "_score": 1,
+      "_source": {
+        "death": "unknown",
+        "source": "Hospital",
+        "outcome": "Unknown",
+        "reactions": [
+          {
+            "pt_name": "Tongue oedema",
+            "soc_name": "Gastrointestinal disorders",
+            "reaction_id": 11523301,
+            "meddra_version": "v.21.0"
+          }
+        ],
+        "report_id": 115233,
+        "report_no": "000115233",
+        "disability": "unknown",
+        "version_no": 0,
+        "datreceived": "1973-04-13T00:00:00",
+        "patient_age": 49,
+        "reaction_pt": [
+          "Tongue oedema"
+        ],
+        "report_type": "Spontaneous",
+        "seriousness": "Yes",
+        "hosp_required": "unknown",
+        "patient_age_y": 49,
+        "datintreceived": "1973-04-13T00:00:00",
+        "patient_gender": "Female",
+        "life_threatening": "unknown",
+        "patient_age_unit": "Years",
+        "congenital_anomaly": "unknown",
+        "report_drug_detail": [
+          {
+            "aer_id": 90100030508,
+            "drugname": "VALIUM ORAL",
+            "report_id": 115233,
+            "product_id": 5001765,
+            "ingredients": "diazepam",
+            "seq_product": 1,
+            "seq_therapy": 1,
+            "dose_unit_fr": "Milligramme",
+            "last_refresh": "2018-08-01T10:28:46.778762-04:00",
+            "dosageform_fr": "NON PRÉCISÉE",
+            "dose_unit_eng": "Milligram",
+            "druginvolv_fr": "Concomitant",
+            "unit_dose_qty": 5,
+            "dosageform_eng": "NOT SPECIFIED",
+            "dose_unit_code": "02",
+            "druginvolv_eng": "Concomitant",
+            "report_drug_id": 545545,
+            "dosageform_code": "5170",
+            "drug_product_id": 17118,
+            "druginvolv_code": "2",
+            "freq_time_unit_fr": "Comme requis",
+            "frequency_time_fr": "Comme requis",
+            "freq_time_unit_eng": "As required",
+            "frequency_time_eng": "As required",
+            "freq_time_unit_code": "12"
+          }
+        ],
+        "report_drugname_suspect": [
+          "AMPICIN"
+        ],
+        "report_ingredient_suspect": [
+          "ampicillin"
+        ],
+        "report_drugname_concomitant": [
+          "LOMOTIL",
+          "VALIUM ORAL"
+        ],
+        "report_ingredient_concomitant": [
+          "atropine sulfate and diphenoxylate hydrochloride",
+          "diazepam"
+        ]
+      }
+    }-->
     <h3>Examples ###</h3>
     <p>Search for documents where the patient's gender is female.<br><code>?search=patient_gender:female</code> <a href="https://node.hres.ca/drug/event?search=patient_gender:female" target="_blank">Try it out</a></p>
     <p>Search for documents where the patient's gender is female and a the outcome was recovered.<br><code>?search=patient_gender:female+AND+outcome:recovered</code> <a href="https://node.hres.ca/drug/event?search=patient_gender:female+AND+outcome:recovered" target="_blank">Try it out</a></p>
@@ -170,7 +274,21 @@
         <tr><td style="width: 35%">### FDA --- Frequency of API updates</td><td>### INFO</td></tr>
       </tbody>
     </table>
-    <h3>Responses</h3>
+    <h3>Response</h3>
+    <h3>Examples ###</h3>
+    <hr>
+    <h2 id="nhp-product-docs">Drug Products</h2>
+    <p>Accessed at ### <a href="https://node.hres.ca/nhp/product" target="_blank">https://node.hres.ca/nhp/product</a></p>
+    <h3>Overview</h3>
+    <table class="table table-striped" style="width: 100%">
+      <tbody>
+        <tr><td style="width: 35%">### FDA --- Source of the data</td><td>### INFO</td></tr>
+        <tr><td style="width: 35%">### FDA --- Changes to the source data</td><td>### INFO</td></tr>
+        <tr><td style="width: 35%">### FDA --- Time period covered by this API</td><td>### INFO</td></tr>
+        <tr><td style="width: 35%">### FDA --- Frequency of API updates</td><td>### INFO</td></tr>
+      </tbody>
+    </table>
+    <h3>Response</h3>
     <h3>Examples ###</h3>
     <div class="row">
       <section class="col-xs-12">
@@ -186,7 +304,7 @@
     <div class="pagedetails">
       <dl id="wb-dtmd">
         <dt>Date modified:&#32;</dt>
-        <dd><time property="dateModified">2018-08-14</time></dd>
+        <dd><time property="dateModified">2018-08-24</time></dd>
       </dl>
       <div class="row">
         <div class="col-sm-6 col-md-5 col-lg-4">
