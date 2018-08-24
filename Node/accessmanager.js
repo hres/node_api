@@ -52,7 +52,20 @@ exports.newAccount = async (email, password) => {
   }
 };
 
-exports.verifyKey = (key) => {
+exports.verifyKey = async (key) => {
 
-  return true;
+  const verifyQuery = "SELECT * FROM api_keys WHERE key = $1";
+  const verifyValues = [key];
+
+  try {
+    var res = await pool.query(verifyQuery, verifyValues);
+     if (res.rows.length > 0) {
+       return true;
+     }
+
+     return false;
+  }
+  catch (err) {
+    return false;
+  }
 };

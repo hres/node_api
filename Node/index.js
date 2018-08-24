@@ -67,8 +67,6 @@ api.post('/account', async (req, res) => {
     try {
       const account = await accessManager.newAccount(req.body.email, req.body.password);
 
-      console.log(account);
-
       res.status(201).json(account);
     }
     catch (err) {
@@ -85,25 +83,6 @@ api.post('/account', async (req, res) => {
 //api.post('/lostkey', (req, res) => {});
 
 //api.post('/getuser', (req, res) => {});
-
-api.use((req, res, next) => {
-
-  if (req.query.hasOwnProperty("key") && accessManager.verifyKey(req.query.key)) {
-    next();
-  }
-  else {
-    res.status(401).json({
-      error: "invalid api key"
-    });
-  }
-});
-
-/*
-api.get('/statistics', (req, res) => {
-
-  res.status(200).json({});
-});
-*/
 
 // get info about endpoints and log files
 api.get('/_info', (req, res) => {
@@ -122,6 +101,26 @@ api.get('/_info', (req, res) => {
     indices: indices,
     logs: logs
   });
+});
+
+/*
+api.get('/statistics', (req, res) => {
+
+  res.status(200).json({});
+});
+*/
+
+// require API key beyond this middleware
+api.use((req, res, next) => {
+
+  if (req.query.hasOwnProperty("key") && accessManager.verifyKey(req.query.key)) {
+    next();
+  }
+  else {
+    res.status(401).json({
+      error: "invalid api key"
+    });
+  }
 });
 
 // format ElasticSearch JSON response
