@@ -10,9 +10,19 @@ function getAPIKey() {
 function manageAPIKeys() {
 
   const email = $("#manage-keys-email").val();
-  const password = $("#manage-keys-password").val()
+  const password = $("#manage-keys-password").val();
 
-  console.log("email: " + email);
-  console.log("password: " + password);
-  console.log("501: Not Implemented.");
+  var data = {
+    email: email,
+    password: password
+  };
+
+  $.post("https://node.hres.ca/getuser", data, (res) => {
+    console.log("email: " + email);
+    console.log("password: " + password);
+    console.log(res);
+  })
+    .fail((xhr) => {
+      console.log(xhr);
+    });
 };
