@@ -118,7 +118,7 @@ api.get('/statistics', (req, res) => {
 // require API key beyond this middleware
 api.use((req, res, next) => {
 
-  if (req.headers.hasOwnProperty("x-api-key")) {
+  /*if (req.headers.hasOwnProperty("x-api-key")) {
     if (req.headers.key == "test" || accessManager.verifyKey(req.headers["x-api-key"])) {
       next();
     }
@@ -127,8 +127,9 @@ api.use((req, res, next) => {
         error: "invalid api key"
       });
     }
-  }
-  else if (req.query.hasOwnProperty("key")) {
+  }*/
+  //else
+  if (req.query.hasOwnProperty("key")) {
     if (req.query.key == "test" || accessManager.verifyKey(req.query.key)) {
       next();
     }
@@ -165,6 +166,8 @@ var createRouter = (endpoint) => {
   var index = endpoint.ES_INDEX;
 
   api.get(route, async (req, res) => {
+
+    console.log(req);
 
     if (req.query.key == "test" || req.headers["x-api-key"] == "test") {
       req.query = demoQuery;

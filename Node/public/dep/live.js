@@ -29,13 +29,9 @@ var ctx;
 
 $(document).ready(() => {
 
-  $.ajaxSetup({
-    headers: {
-      "x-api-key": "40e40966014eb7ac"
-    }
-  });
-
   $.get("https://node.hres.ca/_info", (res) => {
+
+    console.log(res);
 
     res.indices.forEach((index) => {
 
@@ -56,7 +52,11 @@ $(document).ready(() => {
           $("#other_ends").append("<option value='" + index + "'>" + index + "</option>");
           break;
       }
-    });
+    })
+      .fail((xhr) => {
+
+        console.log(xhr);
+      });
 
     buildQuery();
   });
@@ -95,7 +95,7 @@ function buildQuery() {
 
   $("#query").val(query);
 
-  $.get(query, (res) => {
+  $.get(query + "&key=" + defaultKey, (res) => {
 
     $("#ctx-open").prop("hidden", true);
     $("#json-response").val(JSON.stringify(res, null, 2));
