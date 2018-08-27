@@ -175,6 +175,8 @@ var createRouter = (endpoint) => {
 
   api.get(route, async (req, res) => {
 
+    console.log(req.headers["x-real-ip"]);
+
     if (req.query.key == "test") {
       req.query = demoQuery;
     }
