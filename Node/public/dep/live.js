@@ -29,6 +29,12 @@ var ctx;
 
 $(document).ready(() => {
 
+  $.ajaxSetup({
+    headers: {
+      "x-api-key": "40e40966014eb7ac"
+    }
+  });
+
   $.get("https://node.hres.ca/_info", (res) => {
 
     res.indices.forEach((index) => {
@@ -89,7 +95,7 @@ function buildQuery() {
 
   $("#query").val(query);
 
-  $.get(query + "&key=" + defaultKey, (res) => {
+  $.get(query, (res) => {
 
     $("#ctx-open").prop("hidden", true);
     $("#json-response").val(JSON.stringify(res, null, 2));
