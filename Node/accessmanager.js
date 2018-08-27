@@ -69,3 +69,34 @@ exports.verifyKey = async (key) => {
     return false;
   }
 };
+
+exports.getAccount = async (email, password) => {
+
+  const userQuery = "SELECT * FROM users WHERE user_email = $1";
+  const userValues = [email];
+  const accountQuery = "SELECT * FROM api_keys WHERE user_email = $1";
+
+  try {
+    var users = await pool.query(userQuery, userValues);
+
+    if (users.rows.length > 0) {
+      const user = users.rows[0];
+      const pass = crypto.createHash('sha256').update(password + user.salt).digest('hex');
+
+      if (pass === user.password) {
+        var account = await pool.query(accountQuery, userValues);
+
+        return account.rows;
+      }
+      else {
+        throw "invalid credentials";
+      }
+    }
+    else {
+      throw "user not found";
+    }
+  }
+  catch (err) {
+    throw err;
+  }
+};

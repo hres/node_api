@@ -85,9 +85,28 @@ api.post('/account', async (req, res) => {
   }
 });
 
-//api.post('/lostkey', (req, res) => {});
+//api.post('/forgotpassword', (req, res) => {});
 
-//api.post('/getuser', (req, res) => {});
+api.post('/getuser', async (req, res) => {
+
+  if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("passowrd")) {
+    try {
+      var account = await accessManager.getAccount(req.body.email, req.body.password);
+
+      res.status(200).json(account);
+    }
+    catch (err) {
+      res.status(400).json({
+        error: err
+      });
+    }
+  }
+  else {
+    res.status(400).json({
+      error: "bad request"
+    });
+  }
+});
 
 // get info about endpoints and log files
 api.get('/_info', (req, res) => {
@@ -118,17 +137,6 @@ api.get('/statistics', (req, res) => {
 // require API key beyond this middleware
 api.use((req, res, next) => {
 
-  /*if (req.headers.hasOwnProperty("x-api-key")) {
-    if (req.headers.key == "test" || accessManager.verifyKey(req.headers["x-api-key"])) {
-      next();
-    }
-    else {
-      res.status(401).json({
-        error: "invalid api key"
-      });
-    }
-  }*/
-  //else
   if (req.query.hasOwnProperty("key")) {
     if (req.query.key == "test" || accessManager.verifyKey(req.query.key)) {
       next();
@@ -167,9 +175,7 @@ var createRouter = (endpoint) => {
 
   api.get(route, async (req, res) => {
 
-    console.log(req);
-
-    if (req.query.key == "test" || req.headers["x-api-key"] == "test") {
+    if (req.query.key == "test") {
       req.query = demoQuery;
     }
 

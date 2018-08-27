@@ -53,10 +53,6 @@ $(document).ready(() => {
           break;
       }
     })
-      .fail((xhr) => {
-
-        console.log(xhr);
-      });
 
     buildQuery();
   });
