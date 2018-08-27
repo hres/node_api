@@ -21,8 +21,10 @@ function manageAPIKeys() {
     console.log("email: " + email);
     console.log("password: " + password);
     console.log(res);
+    window.alert(JSON.stringify(res, null, 2));
   })
     .fail((xhr) => {
       console.log(xhr);
+      window.alert(xhr);
     });
 };
