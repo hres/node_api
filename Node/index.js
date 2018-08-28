@@ -177,8 +177,10 @@ api.get('/statistics', (req, res) => {
 // require API key beyond this middleware
 api.use((req, res, next) => {
 
+  console.log(accessManager.verifyKey(req.query.key));
+
   if (req.query.hasOwnProperty("key")) {
-    if (req.query.key == "test" || accessManager.verifyKey(req.query.key)) {
+    if (req.query.key == "test" || accessManager.verifyKey(req.query.key) == true) {
       next();
     }
     else {
