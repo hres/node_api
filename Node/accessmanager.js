@@ -101,7 +101,8 @@ exports.verifyKey = async (key) => {
   try {
     var res = await pool.query(verifyQuery, verifyValues);
 
-    if (res.rows.length > 1) {
+    if (res.rows.length > 0) {
+      console.log(res.rows[0].status);
       return res.rows[0].status;
     }
 
@@ -168,9 +169,7 @@ exports.revokeKey = async (email, key) => {
   const revokeValues = [email, key];
 
   try {
-    var x = await pool.query(revokeQuery, revokeValues);
-
-    console.log(x);
+    await pool.query(revokeQuery, revokeValues);
 
     return true;
   }
