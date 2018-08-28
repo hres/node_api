@@ -141,8 +141,9 @@ exports.getAccount = async (email, password) => {
             return {
               key: row.key,
               status: row.status
-          });
-        };
+            }
+          })
+        }
       }
       else {
         throw "invalid credentials";
