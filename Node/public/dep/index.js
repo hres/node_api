@@ -10,19 +10,11 @@ function getAPIKey() {
 function manageAPIKeys() {
 
   const email = $("#manage-keys-email").val();
-  const password = $("#manage-keys-password").val();
 
-  var data = {
-    email: email,
-    password: password
-  };
-
-  $.post("https://node.hres.ca/getuser", data, (res) => {
-    console.log(res);
-    window.alert(JSON.stringify(res, null, 2))
-  })
-    .fail((xhr) => {
-      console.log(xhr);
-      window.alert(xhr);
-    });
+  if (email.indexOf("@") > -1) {
+    window.open("https://node.hres.ca/manage.html?ea=" + encodeURIComponent(email), "_blank");
+  }
+  else {
+    $("#manage-keys-email").val("");
+  }
 };

@@ -5,22 +5,93 @@
 </head>
 <body>
   <style>
-    body { font-family: monospace; padding: 20px }
+    body { font-family: monospace; padding: 20px; font-size: 1.1rem }
   </style>
 
   <form onsubmit="return false;">
     <p style="color: red; display: none" id="failed"></p>
-    <label for="email">Email Address:</label>
-    <input id="email" placeholder="user@example.com"><br><br>
-    <label for="email-2">Confirm Email Address:</label>
-    <input id="email-2" placeholder="user@example.com"><br><br>
-    <button onclick="go()">Get Access</button>
+    <div id="account" style="margin-bottom: 25px"></div>
+    <button onclick="addKey()">Add New API Key</button>
   </form>
-  <p id="success" style="display: none">Success! Your API Key is: <span id="key"></span>, you can manage you API keys by logging in with your email and password from the Health Canada APIs page.</p>
 
   <script>
 
-    
+    var email;
+
+    $(document).ready(() => {
+
+      const data = {
+        email: decodeURIComponent(window.location.search.substr(4))
+      };
+
+      $.post("https://node.hres.ca/getuser", data, (res) => {
+
+        console.log(res);
+
+        email = res.user.user_email;
+
+        var display = "<p>Email: " + res.user.user_email + "</p>";
+        display += "<p>Sign up date: " + res.user.sign_up_date + "</p><br><br>";
+        display += "<p>KEYS:</p>";
+
+        res.keys.forEach((key) => {
+
+          if (key.status == true) {
+            display += "<label>key: <strong>" + key.key + "</strong></label>";
+            display += "<button style='margin-left: 15px' onclick='revokeKey(\"" + key.key + "\")'>Revoke</button><br>"
+          }
+          else {
+            display += "<label style='color: red'>key: <strong>" + key.key + "</strong> (revoked)</label>";
+          }
+        });
+
+        $("#account").html(display);
+      })
+        .fail((xhr) => {
+
+          $("#failed").text("Account not found.").show();
+          console.log(xhr);
+        });
+    });
+
+    function addKey() {
+
+      if (email) {
+        var data = {
+          email: email
+        };
+
+        $.post("https://node.hres.ca/addkey", data, (res) => {
+
+          window.location.reload();
+        })
+          .fail((xhr) => {
+
+            $("#failed").text(JSON.stringify(xhr)).show();
+            console.log(xhr);
+          });
+      }
+    }
+
+    function revokeKey(key) {
+
+      if (email) {
+        var data = {
+          email: email,
+          key: key
+        };
+
+        $.post("https://node.hres.ca/addkey", data, (res) => {
+
+          window.location.reload();
+        })
+          .fail((xhr) => {
+
+            $("#failed").text(JSON.stringify(xhr)).show();
+            console.log(xhr);
+          });
+      }
+    }
 
   </script>
 </body>

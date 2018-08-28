@@ -100,8 +100,9 @@ exports.verifyKey = async (key) => {
 
   try {
     var res = await pool.query(verifyQuery, verifyValues);
-    if (res.rows.length > 0) {
-      return true;
+
+    if (res.rows.length > 1) {
+      return res.rows[0].status;
     }
 
     return false;
@@ -148,12 +149,34 @@ exports.getAccount = async (email) => {
 
 exports.addKey = async (email) => {
 
-  return "999";
+  const keyQuery = "";
+  const keyValues = [email];
+
+  try {
+    var keys = await pool.query(keyQuery, keyValues);
+
+    console.log(keys);
+
+    return true;
+  }
+  catch (err) {
+    throw err;
+  }
 };
 
 exports.revokeKey = async (email, key) => {
 
-  return true;
+  const revokeQuery = "UPDATE api_keys SET status = false WHERE user_email = $1 AND key = $2";
+  const revokeValues = [email, key];
+
+  try {
+    await pool.query(revokeQuery, revokeValues);
+
+    return true;
+  }
+  catch (err) {
+    throw err;
+  }
 };
 
 exports.whitelist = (ip) => {
