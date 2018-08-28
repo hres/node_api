@@ -12,10 +12,8 @@
     <p style="color: red; display: none" id="failed"></p>
     <label for="email">Email Address:</label>
     <input id="email" placeholder="user@example.com"><br><br>
-    <label for="password-1">Password:</label>
-    <input id="password-1" type="password"><br><br>
-    <label for="password-2">Confirm password:</label>
-    <input id="password-2" type="password"><br><br>
+    <label for="email-2">Confirm Email Address:</label>
+    <input id="email-2" placeholder="user@example.com"><br><br>
     <button onclick="go()">Get Access</button>
   </form>
   <p id="success" style="display: none">Success! Your API Key is: <span id="key"></span>, you can manage you API keys by logging in with your email and password from the Health Canada APIs page.</p>
@@ -23,22 +21,20 @@
   <script>
 
     function go() {
-      var password1 = $("#password-1").val();
-      var password2 = $("#password-2").val();
+      var email2 = $("#email-2").val();
       var email = $("#email").val();
 
-      if (password1 !== password2) {
-        $("#failed").text("passwords don't match");
+      if (email.indexOf("@") < 0) {
+        $("#failed").text("invalid email address");
         $("#failed").show();
       }
-      else if (email.indexOf("@") < 0) {
-        $("#failed").text("invalid email address");
+      else if (email !== email2) {
+        $("#failed").text("email addresses don't math");
         $("#failed").show();
       }
       else {
         var data = {
           email: email,
-          password: password1
         };
 
         $.ajax({

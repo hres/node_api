@@ -60,20 +60,16 @@ var pool = new Pool({
 
 pool.connect();
 
-exports.newAccount = async (email, password) => {
+exports.newAccount = async (email) => {
 
-  const salt = crypto.randomBytes(8).toString('hex');
-  const pass = crypto.createHash('sha256').update(password + salt).digest('hex');
   const key = crypto.randomBytes(8).toString('hex');
-
   const time = new Date();
-
   const pgDate = time.getFullYear() + "-" + (time.getMonth() < 9 ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1)) + "-" + time.getDate();
 
   const userQuery = "SELECT * FROM users WHERE user_email = $1";
   const userValues = [email];
-  const insertUserQuery = "INSERT INTO users(user_email, salt, password, sign_up_date) VALUES($1, $2, $3, $4)";
-  const insertUserValues = [email, salt, pass, pgDate];
+  const insertUserQuery = "INSERT INTO users(user_email, sign_up_date) VALUES($1, $2)";
+  const insertUserValues = [email, pgDate];
   const insertKeyQuery = "INSERT INTO api_keys(user_email, key, status) VALUES($1, $2, $3)";
   const insertKeyValues = [email, key, true];
 
@@ -104,18 +100,18 @@ exports.verifyKey = async (key) => {
 
   try {
     var res = await pool.query(verifyQuery, verifyValues);
-     if (res.rows.length > 0) {
-       return true;
-     }
+    if (res.rows.length > 0) {
+      return true;
+    }
 
-     return false;
+    return false;
   }
   catch (err) {
     return false;
   }
 };
 
-exports.getAccount = async (email, password) => {
+exports.getAccount = async (email) => {
 
   const userQuery = "SELECT * FROM users WHERE user_email = $1";
   const userValues = [email];
@@ -124,29 +120,21 @@ exports.getAccount = async (email, password) => {
   try {
     var users = await pool.query(userQuery, userValues);
 
-    if (users.rows.length > 0) {
+    if (users.rows.length == 1) {
       const user = users.rows[0];
-      const pass = crypto.createHash('sha256').update(password + user.salt).digest('hex');
+      const accountValues = [user.user_email];
 
-      if (pass === user.password) {
-        var account = await pool.query(accountQuery, userValues);
+      var account = await pool.query(accountQuery, accountValues);
 
-        return {
-          user: {
-            email: user.user_email,
-            sign_up_date: user.sign_up_date
-          },
-          keys: account.rows.map((row) => {
+      return {
+        user: user,
+        keys: account.rows.map((row) => {
 
-            return {
-              key: row.key,
-              status: row.status
-            }
-          })
-        }
-      }
-      else {
-        throw "invalid credentials";
+          return {
+            key: row.key,
+            status: row.status
+          }
+        })
       }
     }
     else {
@@ -158,9 +146,9 @@ exports.getAccount = async (email, password) => {
   }
 };
 
-exports.addKey = async (email, secret) => {};
+exports.addKey = async (email) => {};
 
-exports.blockKey = async (email, secret, key) => {};
+exports.revokeKey = async (email, key) => {};
 
 exports.whitelist = (ip) => {
 

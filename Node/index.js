@@ -67,9 +67,9 @@ api.set("json spaces", 2);
 
 api.post('/account', async (req, res) => {
 
-  if (req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET && req.body.email && req.body.password) {
+  if (req.headers["x-key-gen-secret"] === c.KEY_GEN_SECRET && req.body.email) {
     try {
-      const account = await accessManager.newAccount(req.body.email, req.body.password);
+      const account = await accessManager.newAccount(req.body.email);
 
       res.status(201).json(account);
     }
