@@ -146,9 +146,15 @@ exports.getAccount = async (email) => {
   }
 };
 
-exports.addKey = async (email) => {};
+exports.addKey = async (email) => {
 
-exports.revokeKey = async (email, key) => {};
+  return "999";
+};
+
+exports.revokeKey = async (email, key) => {
+
+  return true;
+};
 
 exports.whitelist = (ip) => {
 

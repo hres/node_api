@@ -95,9 +95,50 @@ api.post('/getuser', async (req, res) => {
       res.status(200).json(account);
     }
     catch (err) {
-      res.status(400).json({
-        error: err
+      res.status(500).json(err);
+    }
+  }
+  else {
+    res.status(400).json({
+      error: "bad request"
+    });
+  }
+});
+
+api.post('/addkey', async (req, res) => {
+
+  if (req.body.hasOwnProperty("email")) {
+    try {
+      var newKey = await accessManager.addKey(req.body.email);
+
+      res.status(201).json({
+        email: req.body.email,
+        added: newKey
       });
+    }
+    catch (err) {
+      res.status(500).json(err);
+    }
+  }
+  else {
+    res.status(400).json({
+      error: "bad request"
+    });
+  }
+});
+
+api.post('/revokekey', async (req, res) => {
+
+  if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("key")) {
+    try {
+      var revoked = await accessManager.revokeKey(req.body.email, req.body.key);
+
+      res.status(200).json({
+        revoked: revoked
+      });
+    }
+    catch (err) {
+      res.status(500).json(err);
     }
   }
   else {
