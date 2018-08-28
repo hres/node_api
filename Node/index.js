@@ -88,9 +88,9 @@ api.post('/account', async (req, res) => {
 
 api.post('/getuser', async (req, res) => {
 
-  if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("password")) {
+  if (req.body.hasOwnProperty("email")) {
     try {
-      var account = await accessManager.getAccount(req.body.email, req.body.password);
+      var account = await accessManager.getAccount(req.body.email);
 
       res.status(200).json(account);
     }
