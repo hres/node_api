@@ -18,10 +18,8 @@ function manageAPIKeys() {
   };
 
   $.post("https://node.hres.ca/getuser", data, (res) => {
-    console.log("email: " + email);
-    console.log("password: " + password);
     console.log(res);
-    window.alert(JSON.stringify(res, null, 2));
+    window.alert(JSON.stringify(res, null, 2))
   })
     .fail((xhr) => {
       console.log(xhr);

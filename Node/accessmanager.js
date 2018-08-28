@@ -4,6 +4,14 @@
 
 const { Pool } = require('pg');
 const crypto = require('crypto');
+const ipRangeCheck = require('ip-range-check');
+
+const ipWhitelist = [
+  // HRE whitelist
+  "192.168.0.0/16",
+  "172.16.0.0/12",
+  "10.0.0.0/8"
+];
 
 var pool = new Pool({
   user: "manager",
@@ -99,4 +107,11 @@ exports.getAccount = async (email, password) => {
   catch (err) {
     throw err;
   }
+};
+
+exports.whitelist = (ip) => {
+
+  console.log(ip);
+
+  return ipRangeCheck(ip, whitelist);
 };

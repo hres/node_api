@@ -137,7 +137,10 @@ api.get('/statistics', (req, res) => {
 // require API key beyond this middleware
 api.use((req, res, next) => {
 
-  if (req.query.hasOwnProperty("key")) {
+  if (accessManager.whitelist(req.headers["x-real-ip"])) {
+    next();
+  }
+  else if (req.query.hasOwnProperty("key")) {
     if (req.query.key == "test" || accessManager.verifyKey(req.query.key)) {
       next();
     }
@@ -174,8 +177,6 @@ var createRouter = (endpoint) => {
   var index = endpoint.ES_INDEX;
 
   api.get(route, async (req, res) => {
-
-    console.log(req.headers["x-real-ip"]);
 
     if (req.query.key == "test") {
       req.query = demoQuery;
