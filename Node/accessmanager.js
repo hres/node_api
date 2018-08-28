@@ -149,14 +149,12 @@ exports.getAccount = async (email) => {
 
 exports.addKey = async (email) => {
 
-  const keyQuery = "";
-  const keyValues = [email];
+  const key = crypto.randomBytes(8).toString('hex');
+  const keyQuery = "INSERT INTO api_keys(user_email, key, status) VALUES($1, $2, $3)";
+  const keyValues = [email, key, true];
 
   try {
     var keys = await pool.query(keyQuery, keyValues);
-
-    console.log(keys);
-
     return true;
   }
   catch (err) {
@@ -170,7 +168,9 @@ exports.revokeKey = async (email, key) => {
   const revokeValues = [email, key];
 
   try {
-    await pool.query(revokeQuery, revokeValues);
+    var x = await pool.query(revokeQuery, revokeValues);
+
+    console.log(x);
 
     return true;
   }
