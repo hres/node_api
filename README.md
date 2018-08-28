@@ -19,7 +19,7 @@ Web application for querying the Drug Product Database.
 │   │   ├── elastic-builder
 │   │   ├── elasticsearch
 │   │   ├── express
-│   │   ├── ip-range-filter
+│   │   ├── ip-range-check
 │   │   ├── morgan
 │   │   ├── pg
 ```
