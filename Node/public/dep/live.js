@@ -1,5 +1,5 @@
 
-const defaultKey = "40e40966014eb7ac";
+const defaultKey = "e4ed1a00287ba8a3";
 
 const histogramOptions = {
   scales: {
