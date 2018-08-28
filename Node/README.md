@@ -36,6 +36,7 @@ To update all packages run command `npm update -g`
 - elastic-builder `1.3.0` [used to build ElasticSearch queries (Kibana console syntax)]
 - elasticsearch `15.1.1` [interface to connect to ElasticSearch]
 - express `4.16.3` [API framework]
+- ip-range-check `0.0.2` [used for access control]
 - morgan `1.9.0` [used to format logs and create write streams for info vs err]
 
 ## Maintenance
@@ -53,6 +54,9 @@ To add or delete a route (i.e. /drug/route) 2 changes need to be made. In the es
 ```
 All count aggregations default to term aggregations, if the field requires histogram aggregation you must specify the fields in the esquery.js file and append the field name to the "HISTOGRAM_FIELDS" array.
 
+### Access control
+To configure the IP address whitelist for users to gain access without API Keys, modify the ipWhitelist array declared in the accessmanager.js module 
+
 ## Updating
 To add features and tweak this API, please fork the repository and refer to the comments in the code to guide you.
 
@@ -63,3 +67,7 @@ Logs are being output to `/public/info.log` and `/public/err.log`. These files a
 All files in this directory are exposed on express.static as a static web server. Add any static webpages and files you want in this directory to be served from the API.
 
 ## API Keys
+API keys are required with the following structure. Testing IP addresses against a whitelist will lead to higher latency therefore including an API key leads to better response time. The middleware first checks if a key is present, if so, use the key and authenticate, if no key is present then check the IP adddess against the whitelist. 
+
+API key management pages at `/public/manage.html` and `/public/new.html` are an interface to call API Key routes. Should anything go wrong, you can stop the API key requirement and allow all calls to go through by commenting out the middleware `api.use` function indicated under the "require API Keys beyond this point" comment.
+
