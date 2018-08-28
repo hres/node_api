@@ -39,7 +39,6 @@ api.use((req, res, next) => {
 
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Key-Gen-Secret");
-    res.header("Access-Control-Allow-Headers", "X-API-Key");
     next();
 });
 api.use(express.static(path.join(__dirname, "public")));
@@ -137,10 +136,7 @@ api.get('/statistics', (req, res) => {
 // require API key beyond this middleware
 api.use((req, res, next) => {
 
-  if (accessManager.whitelist(req.headers["x-real-ip"])) {
-    next();
-  }
-  else if (req.query.hasOwnProperty("key")) {
+  if (req.query.hasOwnProperty("key")) {
     if (req.query.key == "test" || accessManager.verifyKey(req.query.key)) {
       next();
     }
@@ -149,6 +145,9 @@ api.use((req, res, next) => {
         error: "invalid api key"
       });
     }
+  }
+  else if (accessManager.whitelist(req.headers["x-real-ip"])) {
+    next();
   }
   else {
     res.status(401).json({

@@ -74,8 +74,8 @@ exports.newAccount = async (email, password) => {
   const userValues = [email];
   const insertUserQuery = "INSERT INTO users(user_email, salt, password, sign_up_date) VALUES($1, $2, $3, $4)";
   const insertUserValues = [email, salt, pass, pgDate];
-  const insertKeyQuery = "INSERT INTO api_keys(user_email, key) VALUES($1, $2)";
-  const insertKeyValues = [email, key];
+  const insertKeyQuery = "INSERT INTO api_keys(user_email, key, status) VALUES($1, $2, $3)";
+  const insertKeyValues = [email, key, true];
 
   try {
     var users = await pool.query(userQuery, userValues);
@@ -131,7 +131,18 @@ exports.getAccount = async (email, password) => {
       if (pass === user.password) {
         var account = await pool.query(accountQuery, userValues);
 
-        return account.rows;
+        return {
+          user: {
+            email: user.user_email,
+            sign_up_date: user.sign_up_date
+          },
+          keys: account.rows.map((row) => {
+
+            return {
+              key: row.key,
+              status: row.status
+          });
+        };
       }
       else {
         throw "invalid credentials";
@@ -146,9 +157,11 @@ exports.getAccount = async (email, password) => {
   }
 };
 
-exports.whitelist = (ip) => {
+exports.addKey = async (email, secret) => {};
 
-  console.log(ip);
+exports.blockKey = async (email, secret, key) => {};
+
+exports.whitelist = (ip) => {
 
   return ipRangeCheck(ip, ipWhitelist);
 };
