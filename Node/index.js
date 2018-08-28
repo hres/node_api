@@ -177,16 +177,23 @@ api.get('/statistics', (req, res) => {
 // require API key beyond this middleware
 api.use((req, res, next) => {
 
-  console.log(accessManager.verifyKey(req.query.key));
+  console.log(await accessManager.verifyKey(req.query.key));
 
   if (req.query.hasOwnProperty("key")) {
-    if (req.query.key == "test" || accessManager.verifyKey(req.query.key) == true) {
+    if (req.query.key == "test") {
       next();
     }
     else {
-      res.status(401).json({
-        error: "invalid api key"
-      });
+      var pass = await accessManager.verifyKey(req.query.key);
+
+      if (pass) {
+        next();
+      }
+      else {
+        res.status(401).json({
+          error: "invalid api key"
+        });
+      }
     }
   }
   else if (accessManager.whitelist(req.headers["x-real-ip"])) {
