@@ -113,5 +113,5 @@ exports.whitelist = (ip) => {
 
   console.log(ip);
 
-  return ipRangeCheck(ip, whitelist);
+  return ipRangeCheck(ip, ipWhitelist);
 };
