@@ -76,16 +76,11 @@ function populateTable(data) {
 
   var body = "";
 
+  const drugPageURL = document.documentElement.lang == "fr" ? "drug-fr.html" : "drug.html";
+
   data.forEach((d) => {
 
     const drug = d.drug_product;
-
-    console.log(drug);
-
-    /*var status = (drug.status_detail).length > 1 ? (drug.status_detail).reduce((a, b) => {
-
-      return a.history_date < b.history_date ? a.status_detail : b.status_detail;
-    }) : drug.status[0].status;*/
 
     const status = drug.status_current;
 
@@ -96,7 +91,7 @@ function populateTable(data) {
 
     body += "<tr>" +
       "<td>" + status + "</td>" +
-      "<td><a href='drug.html?pr=" + drug.drug_code + "'>" + drug.drug_identification_number + "</a></td>" +
+      "<td><a href='" + drugPageURL + "?pr=" + drug.drug_code + "'>" + drug.drug_identification_number + "</a></td>" +
       "<td>" + drug.company.company_name + "</td>" +
       "<td>" + drug.brand_name + "</td>" +
       "<td>" + drug.class + "</td>" +
@@ -108,6 +103,7 @@ function populateTable(data) {
   $("#table-content").html(body);
   $("#pagination").attr("hidden", false);
   $("#empty").attr("hidden", true);
+  $("#refresh").text(makeDate(data[0].drug_product.last_refresh));
 }
 
 function createPagination(content) {
@@ -181,4 +177,13 @@ function end() {
   $("#drug-table").attr("hidden", true);
   $("#pagination").attr("hidden", true);
   $("#empty").attr("hidden", false);
+}
+
+function makeDate(iso) {
+
+  const d = new Date(iso);
+  const month = d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1);
+  const day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+
+  return d.getFullYear() + "-" + month + "-" + day;
 }

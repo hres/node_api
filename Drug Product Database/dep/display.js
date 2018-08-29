@@ -66,15 +66,32 @@ $(document).ready(() => {
     });
 
     $("#ingredients-content").html(body);
-    $("#rmp").html("A Risk Management Plan (RMP) for this product " + (drug.risk_man_plan == "N" ? "was not" : "was") + " submitted.");
+
+    if (document.documentElement.lang == "fr") {
+      $("#rmp").html("Un Plan de Gestion des Risques (PGR) pour ce produit " + (drug.risk_man_plan == "N" ? "n'a pas été" : "a été") + " soumis.");
+    }
+    else {
+      $("#rmp").html("A Risk Management Plan (RMP) for this product " + (drug.risk_man_plan == "N" ? "was not" : "was") + " submitted.");
+    }
+
     $("#api-call").attr("href", url).attr("target", "_blank").html(url);
     $("#refresh").text(makeDate(drug.last_refresh));
 
-    if (drug.product_monograph_en_url) {
-      $("#monograph").html("<a href='" + drug.product_monograph_en_url + "' target='_blank'>Electronic Monograph (" + makeDate(drug.pm_date) + ")</a>");
+    if (document.documentElement.lang == "fr") {
+      if (drug.product_monograph_fr_url) {
+        $("#monograph").html("<a href='" + drug.product_monograph_fr_url + "' target='_blank'>Monographie électronique (" + makeDate(drug.pm_date) + ")</a>");
+      }
+      else {
+        $("#monograph").html("Aucune monographie électronique disponible");
+      }
     }
     else {
-      $("#monograph").html("No Electronic Monograph Available");
+      if (drug.product_monograph_en_url) {
+        $("#monograph").html("<a href='" + drug.product_monograph_en_url + "' target='_blank'>Electronic Monograph (" + makeDate(drug.pm_date) + ")</a>");
+      }
+      else {
+        $("#monograph").html("No Electronic Monograph Available");
+      }
     }
   });
 });
