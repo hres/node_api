@@ -101,18 +101,18 @@ exports.build = (query) => {
     else {
       var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : MAX_LIMIT;
 
-      esbody.agg(builder.termsAggregation(TERMS_AGGREGATION_NAME, params[0])/*.size(limit)*/);
+      esbody.agg(builder.termsAggregation(TERMS_AGGREGATION_NAME, params[0]).size(limit));
     }
 
-    esbody.size(0);
+    //esbody.size(0);
   }
 
-  if (query.hasOwnProperty("skip") && !query.hasOwnProperty("count")) {
+  if (query.hasOwnProperty("skip") /*&& !query.hasOwnProperty("count")*/) {
     var skip = parseInt(query.skip);
     esbody.from(skip);
   }
 
-  if (query.hasOwnProperty("limit") && !query.hasOwnProperty("count")) {
+  if (query.hasOwnProperty("limit") /*&& !query.hasOwnProperty("count")*/) {
     var limit = parseInt(query.limit);
 
     if (limit > MAX_LIMIT) {
