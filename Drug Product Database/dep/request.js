@@ -74,6 +74,8 @@ function requestDocuments(q) {
 
 function populateTable(data) {
 
+  console.log(data);
+
   var body = "";
 
   const drugPageURL = document.documentElement.lang == "fr" ? "drug-fr.html" : "drug.html";
@@ -82,11 +84,12 @@ function populateTable(data) {
 
     const drug = d.drug_product;
 
-    const status = drug.status_current;
+    var status = document.documentElement.lang == "fr" ? drug.status_current_f : drug.status_current;
+    var drugClass = document.documentElement.lang == "fr" ? drug.class_f : drug.class;
 
     var ingredients = $.map(drug.active_ingredients_detail, (ing) => {
 
-      return ing.ingredient + " (" + ing.strength + " " + ing.strength_unit + ")";
+      return (document.documentElement.lang == "fr") ? (ing.ingredient_f + " (" + ing.strength + " " + ing.strength_unit_f + ")") : (ing.ingredient + " (" + ing.strength + " " + ing.strength_unit + ")");
     }).join(", ");
 
     body += "<tr>" +
@@ -94,7 +97,7 @@ function populateTable(data) {
       "<td><a href='" + drugPageURL + "?pr=" + drug.drug_code + "'>" + drug.drug_identification_number + "</a></td>" +
       "<td>" + drug.company.company_name + "</td>" +
       "<td>" + drug.brand_name + "</td>" +
-      "<td>" + drug.class + "</td>" +
+      "<td>" + drugClass + "</td>" +
       "<td>" + ingredients + "</td>" +
       "</tr>";
   });
