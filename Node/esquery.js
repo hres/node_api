@@ -101,7 +101,7 @@ exports.build = (query) => {
     else {
       var limit = query.hasOwnProperty("limit") && query.limit < MAX_LIMIT ? query.limit : MAX_LIMIT;
 
-      esbody.agg(builder.termsAggregation(TERMS_AGGREGATION_NAME, params[0]).size(limit));
+      esbody.agg(builder.termsAggregation(TERMS_AGGREGATION_NAME, params[0])/*.size(limit)*/);
     }
 
     esbody.size(0);
