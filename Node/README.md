@@ -81,7 +81,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE api_keys (
-  user_email varchar(256 )REFERENCES users (user_email),
+  user_email varchar(256) REFERENCES users (user_email),
   key varchar(32) UNIQUE
 );
 ```
