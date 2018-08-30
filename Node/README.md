@@ -71,3 +71,18 @@ API keys are required with the following structure. Testing IP addresses against
 
 API key management pages at `/public/manage.html` and `/public/new.html` are an interface to call API Key routes. Should anything go wrong, you can stop the API key requirement and allow all calls to go through by commenting out the middleware `api.use` function indicated under the "require API Keys beyond this point" comment.
 
+### Database Schema
+```bash
+CREATE TABLE users (
+  user_email varchar(256) PRIMARY KEY,
+  #salt varchar(32) NOT NULL,
+  #password text NOT NULL,
+  sign_up_date date NOT NULL
+);
+
+CREATE TABLE api_keys (
+  user_email varchar(256 )REFERENCES users (user_email),
+  key varchar(32) UNIQUE
+);
+```
+
