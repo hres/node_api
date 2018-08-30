@@ -86,11 +86,11 @@ exports.newAccount = async (email) => {
         };
     }
     else {
-      var key = await exports.addKey(email);
+      var keyAdded = await exports.addKey(email);
 
       return {
         user_email: email,
-        api_key: key
+        api_key: keyAdded
       };
     }
 
