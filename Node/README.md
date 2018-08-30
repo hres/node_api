@@ -6,21 +6,72 @@ This README file was last updated on 2018-08-31.
 ## Environment Setup
 Check your version of Node and npm using `node -v` and `npm -v `. To update npm run `sudo npm install -g npm` (currently using v6.4.0).
 
-To start the node process in dev mode run the index.js file with command `node index`.
+To start the node process in dev mode run the index.js file with required env variables with command `DB=*** DB_USER=*** DB_PASS=*** node index`.
 
 To start in production mode, use process manager PM2 as follows:
 ```bash
 # install PM2
 npm install pm2
 
+# generate ecosystem.config.js file
+pm2 ecosystem
+
+# edit ecosystem.config.js file to look like this (with text editor i.e. emacs)
+module.exports = {
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  apps : [
+
+    // First application
+    {
+      name      : 'NODE-API',
+      script    : 'index.js',
+      env: {
+        DB      : '*********',
+        DB_USER : '*******',
+        DB_PASS : '***********'
+      },
+      env_production : {}
+    }
+  ],
+
+  /**
+   * Deployment section
+   * http://pm2.keymetrics.io/docs/usage/deployment/
+   */
+  deploy : {
+    production : {
+      user : 'node',
+      host : '212.83.163.1',
+      ref  : 'origin/master',
+      repo : 'git@github.com:repo.git',
+      path : '/var/www/production',
+      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env produ                                                            ction'
+    },
+    dev : {
+      user : 'node',
+      host : '212.83.163.1',
+      ref  : 'origin/master',
+      repo : 'git@github.com:repo.git',
+      path : '/var/www/development',
+      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env dev',
+      env  : {
+        NODE_ENV: 'dev'
+      }
+    }
+  }
+};
+
 # start the node server
-pm2 start index.js -i max
+pm2 start ecosystem.config.js
 
 # restart the server implement changes
-pm2 restart all
+pm2 restart ecosystem.config.js
 
 # stop the server
-pm2 stop all
+pm2 stop ecosystem.config.js
 
 # daemon start server on Ubuntu
 pm2 startup systemd
