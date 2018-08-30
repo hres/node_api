@@ -86,6 +86,7 @@ api.post('/account', async (req, res) => {
 
 //api.post('/forgotpassword', (req, res) => {});
 
+/*
 api.post('/getuser', async (req, res) => {
 
   if (req.body.hasOwnProperty("email")) {
@@ -104,7 +105,9 @@ api.post('/getuser', async (req, res) => {
     });
   }
 });
+*/
 
+/*
 api.post('/addkey', async (req, res) => {
 
   if (req.body.hasOwnProperty("email")) {
@@ -126,7 +129,9 @@ api.post('/addkey', async (req, res) => {
     });
   }
 });
+*/
 
+/*
 api.post('/revokekey', async (req, res) => {
 
   if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("key")) {
@@ -147,6 +152,7 @@ api.post('/revokekey', async (req, res) => {
     });
   }
 });
+*/
 
 // get info about endpoints and log files
 api.get('/_info', (req, res) => {

@@ -85,8 +85,16 @@ exports.newAccount = async (email) => {
           api_key: key
         };
     }
+    else {
+      var key = await exports.addKey(email);
 
-    throw "email already in use";
+      return {
+        user_email: email,
+        api_key: key
+      };
+    }
+
+    //throw "email already in use";
   }
   catch (err) {
     throw err;
@@ -102,7 +110,6 @@ exports.verifyKey = async (key) => {
     var res = await pool.query(verifyQuery, verifyValues);
 
     if (res.rows.length > 0) {
-      console.log(res.rows[0].status);
       return res.rows[0].status;
     }
 
@@ -156,13 +163,14 @@ exports.addKey = async (email) => {
 
   try {
     var keys = await pool.query(keyQuery, keyValues);
-    return true;
+    return key;
   }
   catch (err) {
     throw err;
   }
 };
 
+/*
 exports.revokeKey = async (email, key) => {
 
   const revokeQuery = "UPDATE api_keys SET status = false WHERE user_email = $1 AND key = $2";
@@ -177,6 +185,7 @@ exports.revokeKey = async (email, key) => {
     throw err;
   }
 };
+*/
 
 exports.whitelist = (ip) => {
 
