@@ -51,10 +51,10 @@ const ipWhitelist = [
 ];
 
 var pool = new Pool({
-  user: "manager",
+  user: process.env.DB_USER,
   host: "localhost",
-  database: "api_admin",
-  password: "api_manager",
+  database: process.env.DB,
+  password: process.env.DB_PASS,
   port: 5432
 });
 
