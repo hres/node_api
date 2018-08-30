@@ -13,56 +13,10 @@ To start in production mode, use process manager PM2 as follows:
 # install PM2
 npm install pm2
 
-# generate ecosystem.config.js file
+# generate ecosystem.config.js file or clone from this git repo
 pm2 ecosystem
 
-# edit ecosystem.config.js file to look like this (with text editor i.e. emacs)
-module.exports = {
-  /**
-   * Application configuration section
-   * http://pm2.keymetrics.io/docs/usage/application-declaration/
-   */
-  apps : [
-
-    // First application
-    {
-      name      : 'NODE-API',
-      script    : 'index.js',
-      env: {
-        DB      : '*********',
-        DB_USER : '*******',
-        DB_PASS : '***********'
-      },
-      env_production : {}
-    }
-  ],
-
-  /**
-   * Deployment section
-   * http://pm2.keymetrics.io/docs/usage/deployment/
-   */
-  deploy : {
-    production : {
-      user : 'node',
-      host : '212.83.163.1',
-      ref  : 'origin/master',
-      repo : 'git@github.com:repo.git',
-      path : '/var/www/production',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env produ                                                            ction'
-    },
-    dev : {
-      user : 'node',
-      host : '212.83.163.1',
-      ref  : 'origin/master',
-      repo : 'git@github.com:repo.git',
-      path : '/var/www/development',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env dev',
-      env  : {
-        NODE_ENV: 'dev'
-      }
-    }
-  }
-};
+# add DB, DB_USER, and DB_PASS env variables to config file
 
 # start the node server
 pm2 start ecosystem.config.js
