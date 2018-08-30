@@ -63,6 +63,8 @@ pool.connect();
 exports.newAccount = async (email) => {
 
   const key = crypto.randomBytes(8).toString('hex');
+  //cosnt salt = crypto.randomBytes(16).toString('hex');
+  //const pass = crypto.createHash('sha256').update(password + salt).digest('hex');
   const time = new Date();
   const pgDate = time.getFullYear() + "-" + (time.getMonth() < 9 ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1)) + "-" + time.getDate();
 
