@@ -140,3 +140,10 @@ CREATE TABLE api_keys (
 );
 ```
 
+## TODO
+- Add skip/limit functionality to ElasticSearch count (term aggregation) query
+- Add password protection to accounts and api keys (uncomment)
+- Add and revoke api key functionality (uncomment)
+- Move log files out of express.static (?)
+- Fill documentation pages
+
