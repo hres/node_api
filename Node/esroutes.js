@@ -15,6 +15,14 @@ module.exports = {
     {
       "API_ENDPOINT": "/nhp/product",
       "ES_INDEX": "lnhpd"
+    },
+    {
+      "API_ENDPOINT": "/drug/licence",
+      "ES_INDEX": "notice_of_compliance"
+    },
+    {
+      "API_ENDPOINT": "/other/clinical_trial",
+      "ES_INDEX": "clinical_trials"
     }
   ],
   "LANDINGS": [
