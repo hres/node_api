@@ -9,6 +9,7 @@ const QS_LIST = [
   "count",
   "skip",
   "limit",
+  "sort",
   "key"
 ];
 const HISTOGRAM_FIELDS = [
@@ -19,7 +20,11 @@ const HISTOGRAM_FIELDS = [
   "status_detail.original_market_date",
   "status_approved_date",
   "last_refresh",
-  "licence_date"
+  "licence_date",
+  "noc_date",
+  "start_date",
+  "nol_date",
+  "end_date"
 ];
 const HISTOGRAM_INTERVALS = [
   "year",
