@@ -40,10 +40,10 @@ $(document).ready(() => {
     if (document.documentElement.lang == "fr") { // FRENCH
       $("#company").append("<br>" + drug.company.street_name + "<br>" + drug.company.city_name + ", " + drug.company.province_f + "<br>" + drug.company.country_f + " " + drug.company.postal_code);
       $("#drug-class").html(drug.class_f);
-      $("#dosage").html(drug.dosage_form_f[0]);
-      $("#route").html(drug.route_f[0]);
+      $("#dosage").html(drug.dosage_form_f.join(', '));
+      $("#route").html(drug.route_f.join(', '));
 
-      if (drug.schedule) $("#schedule").html(drug.schedule_f[0]);
+      if (drug.schedule) $("#schedule").html(drug.schedule_f.join(', '));
 
       (drug.active_ingredients_detail).forEach((ing) => {
 
@@ -66,10 +66,10 @@ $(document).ready(() => {
     else { // ENGLISH
       $("#company").append("<br>" + drug.company.street_name + "<br>" + drug.company.city_name + ", " + drug.company.province + "<br>" + drug.company.country + " " + drug.company.postal_code);
       $("#drug-class").html(drug.class);
-      $("#dosage").html(drug.dosage_form[0]);
-      $("#route").html(drug.route[0]);
+      $("#dosage").html(drug.dosage_form.join(', '));
+      $("#route").html(drug.route.join(', '));
 
-      if (drug.schedule) $("#schedule").html(drug.schedule[0]);
+      if (drug.schedule) $("#schedule").html(drug.schedule.join(', '));
 
       (drug.active_ingredients_detail).forEach((ing) => {
 
